@@ -78,6 +78,9 @@
   "notification_panel": {
     "button": false
   },
+  "chat_panel": {
+    "button": false
+  },
   "seed_search_query_from_cursor": "selection",
   "assistant": {
     "enabled": false

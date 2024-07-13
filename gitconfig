@@ -1,0 +1,7 @@
+[user]
+	name = smit
+	email = smitchaudhary10@gmail.com
+[init]
+	defaultBranch = main
+[commit]
+	verbose = true

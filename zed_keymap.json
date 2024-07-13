@@ -1,0 +1,21 @@
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-tab": "pane::ActivateNextItem",
+      "alt-shift-tab": "pane::ActivatePrevItem"
+    }
+  },
+  {
+    "context": "EmptyPane || SharedScreen || vim_operator == none && !VimWaiting && vim_mode != insert",
+    "bindings": {
+      "ctrl-o": "projects::OpenRecent"
+    }
+  },
+  {
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "shift-i": "editor::Hover"
+    }
+  }
+]

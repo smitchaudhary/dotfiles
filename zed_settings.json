@@ -1,0 +1,85 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+  "features": {
+    "inline_completion": false
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "base_keymap": "VSCode",
+  "theme": "Ayu Dark",
+  "experimental.theme_overrides": {
+    "background": "#00000077",
+    "terminal.background": "#00000000",
+    "border": "#00000000",
+    "status_bar.background": "#00000099",
+    "toolbar.background": "#00000000",
+    "panel.background": "#00000000",
+    "tab.inactive_background": "#00000000",
+    "panel.focused_border": "#FF000033",
+    "editor.gutter.background": "#00000000",
+    "editor.background": "#00000000",
+    "background.appearance": "blurred"
+  },
+  "vim_mode": true,
+  "relative_line_numbers": true,
+  "ui_font_size": 16,
+  "ui_font_family": "Zed Plex Sans",
+  "buffer_font_size": 16,
+  "buffer_font_family": "Zed Plex Mono",
+  "auto_update": true,
+  "confirm_quit": true,
+  "remove_trailing_whitespace_on_save": true,
+  "scrollbar": {
+    "git_diff": true,
+    "selections": true,
+    "show": "auto"
+  },
+  "terminal": {
+    "blinking": "on"
+  },
+  "wrap_guides": [80, 88, 100],
+  "tabs": {
+    "git_status": true
+  },
+  "languages": {
+    "Python": {
+      "enable_language_server": true,
+      "format_on_save": {
+        "external": {
+          "command": "black",
+          "arguments": ["-"]
+        }
+      }
+    }
+  },
+  "git": {
+    "git_gutter": "tracked_files",
+    "gutter_debounce": 500,
+    "inline_blame": {
+      "enabled": true,
+      "delay_ms": 500
+    }
+  },
+  "project_panel": {
+    "git_status": true
+  },
+  "collaboration_panel": {
+    "button": false
+  },
+  "notification_panel": {
+    "button": false
+  },
+  "seed_search_query_from_cursor": "selection",
+  "assistant": {
+    "enabled": false
+  }
+}

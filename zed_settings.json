@@ -15,7 +15,7 @@
     "metrics": false
   },
   "base_keymap": "VSCode",
-  "theme": "Ayu Dark",
+  "theme": "Catppuccin Espresso (Blur)",
   "experimental.theme_overrides": {
     "background": "#00000077",
     "terminal.background": "#00000000",
@@ -48,7 +48,8 @@
   },
   "wrap_guides": [80, 88, 100],
   "tabs": {
-    "git_status": true
+    "git_status": true,
+    "file_icons": true
   },
   "languages": {
     "Python": {

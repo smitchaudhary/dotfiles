@@ -85,5 +85,6 @@
   "seed_search_query_from_cursor": "selection",
   "assistant": {
     "enabled": false
-  }
+  },
+  "auto_signature_help": true
 }

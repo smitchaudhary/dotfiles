@@ -16,13 +16,13 @@
     }
   },
   {
-    "context": "EmptyPane || SharedScreen || vim_mode == normal",
+    "context": "EmptyPane || SharedScreen || vim_operator == none && !VimWaiting && vim_mode != insert",
     "bindings": {
       "ctrl-o": "projects::OpenRecent"
     }
   },
   {
-    "context": "Editor && VimControl && vim_mode != waiting && !menu",
+    "context": "Editor && VimControl && !VimWaiting && !menu",
     "bindings": {
       "shift-i": "editor::Hover"
     }

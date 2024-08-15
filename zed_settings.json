@@ -44,7 +44,9 @@
     "show": "auto"
   },
   "terminal": {
-    "blinking": "on"
+    "blinking": "on",
+    "font_family": "Hack Nerd Font Mono",
+    "font_size": 14
   },
   "wrap_guides": [80, 88, 100],
   "tabs": {

@@ -78,6 +78,7 @@ fi
 
 alias gs="git status"
 alias ga="git add"
+alias gap="git add --patch"
 alias gco="git checkout"
 alias gl1="git log --oneline"
 alias gcm="git commit -m"
@@ -85,7 +86,10 @@ alias gm="git merge"
 alias glg="git log"
 alias gd="git diff"
 alias gb="git branch"
+alias gch="git branch -l | fzf | xargs -I ZZZ git checkout ZZZ"
+alias gchr="git branch -r | fzf | xargs -I ZZZ git checkout ZZZ"
 alias tls="tmux list-session"
+alias hvs="hatch -v shell"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -41,6 +41,7 @@ brew "zsh"
 
 cask "apptivate"
 cask "atom"
+cask "bitwarden"
 cask "discord"
 cask "firefox"
 cask "flux"

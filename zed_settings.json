@@ -17,7 +17,7 @@
   "base_keymap": "VSCode",
   "theme": "Catppuccin Espresso (Blur)",
   "experimental.theme_overrides": {
-    "background": "#00000099",
+    "background": "#000000BB",
     "terminal.background": "#00000000",
     "border": "#00000000",
     "status_bar.background": "#000000FF",

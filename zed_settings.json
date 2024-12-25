@@ -99,5 +99,6 @@
   "assistant": {
     "enabled": false
   },
-  "auto_signature_help": true
+  "auto_signature_help": true,
+  "show_user_picture": false
 }

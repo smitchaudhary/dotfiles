@@ -24,7 +24,6 @@
     "toolbar.background": "#00000000",
     "panel.background": "#00000000",
     "tab.inactive_background": "#00000000",
-    "panel.focused_border": "#FF000033",
     "editor.gutter.background": "#00000000",
     "editor.background": "#00000000",
     "background.appearance": "blurred"

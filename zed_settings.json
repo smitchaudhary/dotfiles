@@ -15,18 +15,10 @@
     "metrics": false
   },
   "base_keymap": "VSCode",
-  "theme": "Catppuccin Espresso (Blur)",
-  "experimental.theme_overrides": {
-    "background": "#000000BB",
-    "terminal.background": "#00000000",
-    "border": "#00000000",
-    "status_bar.background": "#000000FF",
-    "toolbar.background": "#00000000",
-    "panel.background": "#00000000",
-    "tab.inactive_background": "#00000000",
-    "editor.gutter.background": "#00000000",
-    "editor.background": "#00000000",
-    "background.appearance": "blurred"
+  "theme": {
+    "mode": "system",
+    "dark": "Gruvbox Dark Hard",
+    "light": "Gruvbox Light Hard"
   },
   "vim_mode": true,
   "relative_line_numbers": true,

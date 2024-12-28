@@ -1,0 +1,4 @@
+theme = catppuccin-mocha
+font-size = 19
+background-blur-radius = 20
+background-opacity = 0.8

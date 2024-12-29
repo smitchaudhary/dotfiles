@@ -16,6 +16,13 @@
     }
   },
   {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-§": "workspace::ActivateNextPane",
+      "cmd-shift-§": "workspace::ActivatePreviousPane"
+    }
+  },
+  {
     "context": "EmptyPane || SharedScreen || vim_operator == none && !VimWaiting && vim_mode != insert",
     "bindings": {
       "ctrl-o": "projects::OpenRecent"

@@ -87,7 +87,7 @@ alias glg="git log"
 alias gd="git diff"
 alias gb="git branch"
 alias gch="git branch -l | fzf | xargs -I ZZZ git checkout ZZZ"
-alias gchr="git branch -r | fzf | xargs -I ZZZ git checkout ZZZ"
+alias gchr="git branch -r | fzf | xargs -I ZZZ git checkout --track ZZZ"
 alias tls="tmux list-session"
 alias hvs="hatch -v shell"
 

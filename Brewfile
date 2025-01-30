@@ -49,6 +49,7 @@ brew "zlib"
 brwe "yazi"
 brew "zoxide"
 brew "zsh"
+brew "zsh-syntax-highlighting"
 
 cask "apptivate"
 cask "atom"

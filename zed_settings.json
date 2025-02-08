@@ -42,8 +42,10 @@
   "wrap_guides": [80, 88, 100],
   "tabs": {
     "git_status": true,
-    "activate_on_close": "left_neighbour"
+    "activate_on_close": "left_neighbour",
+    "file_icons": true
   },
+  "icon_theme": "Material Icon Theme",
   "languages": {
     "Python": {
       "enable_language_server": true,

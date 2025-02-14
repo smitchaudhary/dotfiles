@@ -8,7 +8,7 @@
 // from the command palette or from `Zed` application menu.
 {
   "features": {
-    "inline_completion_provider": "none"
+    "edit_prediction_provider": "none"
   },
   "telemetry": {
     "diagnostics": false,
@@ -87,7 +87,7 @@
     "button": false
   },
   "chat_panel": {
-    "button": false
+    "button": "never"
   },
   "seed_search_query_from_cursor": "selection",
   "assistant": {

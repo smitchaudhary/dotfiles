@@ -94,5 +94,6 @@
     "enabled": false
   },
   "auto_signature_help": true,
-  "show_user_picture": false
+  "show_user_picture": false,
+  "on_last_window_closed": "quit_app"
 }

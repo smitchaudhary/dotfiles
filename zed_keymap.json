@@ -3,7 +3,7 @@
     "context": "Editor",
     "bindings": {
       "alt-tab": "pane::ActivateNextItem",
-      "alt-shift-tab": "pane::ActivatePrevItem",
+      "alt-shift-tab": "pane::ActivatePreviousItem",
       "cmd-1": ["pane::ActivateItem", 0],
       "cmd-2": ["pane::ActivateItem", 1],
       "cmd-3": ["pane::ActivateItem", 2],

@@ -89,7 +89,7 @@
   "chat_panel": {
     "button": "never"
   },
-  "seed_search_query_from_cursor": "selection",
+  "seed_search_query_from_cursor": "always",
   "assistant": {
     "enabled": false
   },

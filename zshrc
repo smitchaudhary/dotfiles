@@ -45,8 +45,19 @@ source <(fzf --zsh)
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 #export PATH="$PATH:$HOME/.rvm/bin"
 
+# Enable vim mode for command line editing
+bindkey -v
+
+# Reduce delay for key combinations to change to vi mode faster
+export KEYTIMEOUT=1
+
+# Open line in vim by pressing 'v' in command mode
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+
 # Load private credentials and such that should not be shared with the dotfile
-# Currently loads PYPI credentials for private repos
+# Currently loads API Keys
 local private="${HOME}/.zsh.d/private.sh"
 if [ -e ${private} ]; then
   . ${private}

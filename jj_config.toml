@@ -1,0 +1,16 @@
+"$schema" = "https://jj-vcs.github.io/jj/latest/config-schema.json"
+
+[user]
+name = "Smit Chaudhary"
+email = "smitchaudhary10@gmail.com"
+
+[ui]
+default-command = "log"
+diff-editor = ":builtin"
+merge-editor = ":builtin"
+editor = "vim"
+
+[signing]
+behavior = "own"
+backend = "ssh"
+key = "~/.ssh/id_ed25519.pub"

@@ -5,3 +5,7 @@
 	defaultBranch = main
 [commit]
 	verbose = true
+[core]
+	excludesFile = ~/.gitignore_global
+[pull]
+    rebase = true

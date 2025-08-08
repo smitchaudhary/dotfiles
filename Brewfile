@@ -61,6 +61,7 @@ brwe "yazi"
 brew "zlib"
 brew "zoxide"
 brew "zsh"
+brew "zsh-async"
 brew "zsh-syntax-highlighting"
 
 cask "apptivate"

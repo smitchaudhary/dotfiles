@@ -91,6 +91,11 @@ alias gchr="git branch -r | fzf | xargs -I ZZZ git checkout --track ZZZ"
 alias tls="tmux list-session"
 alias hvs="hatch -v shell"
 
+# Load zsh-async for jj prompt support
+# Add zsh-async to FPATH and autoload it
+fpath+=/opt/homebrew/opt/zsh-async/share/zsh/site-functions
+autoload -Uz async && async
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme

@@ -4,6 +4,19 @@
 name = "Smit Chaudhary"
 email = "smitchaudhary10@gmail.com"
 
+[aliases]
+tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
+e = ["edit"]
+pull = ["git", "fetch"]
+push = ["git", "push", "--allow-new"]
+
+[revset-aliases]
+"closest_bookmark(to)" = "heads(::to & bookmarks())"
+
+[git]
+push-new-bookmarks = true
+
+
 [ui]
 default-command = "log"
 diff-editor = ":builtin"

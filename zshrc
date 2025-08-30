@@ -102,6 +102,12 @@ alias gchr="git branch -r | fzf | xargs -I ZZZ git checkout --track ZZZ"
 alias tls="tmux list-session"
 alias hvs="hatch -v shell"
 
+alias js="jj status"
+alias jcm="jj commit -m"
+alias jdm="jj describe -m"
+alias jd="jj diff"
+alias jn="jj new"
+
 # Load zsh-async for jj prompt support
 # Add zsh-async to FPATH and autoload it
 fpath+=/opt/homebrew/opt/zsh-async/share/zsh/site-functions

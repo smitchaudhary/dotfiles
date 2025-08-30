@@ -1,18 +1,68 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run the `open default settings` command
-// from the command palette or from `Zed` application menu.
 {
+  "agent_servers": {
+    "gemini": {
+      "ignore_system_version": false
+    }
+  },
   "edit_predictions": {
     "mode": "subtle",
     "enabled_in_text_threads": false
   },
   "agent": {
-    "play_sound_when_agent_done": true
+    "profiles": {
+      "write": {
+        "name": "Write",
+        "tools": {
+          "terminal": true,
+          "batch_tool": true,
+          "code_actions": true,
+          "code_symbols": true,
+          "contents": true,
+          "copy_path": false,
+          "create_file": true,
+          "delete_path": false,
+          "diagnostics": false,
+          "edit_file": true,
+          "fetch": true,
+          "list_directory": true,
+          "move_path": false,
+          "now": true,
+          "find_path": true,
+          "read_file": true,
+          "grep": true,
+          "rename": true,
+          "symbol_info": true,
+          "thinking": true,
+          "create_directory": true
+        },
+        "enable_all_context_servers": true,
+        "context_servers": {}
+      },
+      "ask": {
+        "name": "Ask",
+        "tools": {
+          "batch_tool": false,
+          "diagnostics": false,
+          "fetch": true,
+          "list_directory": true,
+          "now": true,
+          "find_path": true,
+          "read_file": true,
+          "grep": true,
+          "thinking": true,
+          "terminal": false
+        },
+        "enable_all_context_servers": false,
+        "context_servers": {}
+      }
+    },
+    "default_profile": "write",
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4-thinking"
+    },
+    "play_sound_when_agent_done": true,
+    "use_modifier_to_send": true
   },
   "features": {
     "edit_prediction_provider": "zed"
@@ -29,10 +79,10 @@
   },
   "vim_mode": true,
   "relative_line_numbers": true,
-  "ui_font_family": "Zed Plex Sans",
+  "ui_font_family": "IBM Plex Sans",
   "ui_font_size": 16,
   "buffer_font_size": 16,
-  "buffer_font_family": "Zed Plex Mono",
+  "buffer_font_family": "MonoLisa",
   "auto_update": true,
   "confirm_quit": true,
   "remove_trailing_whitespace_on_save": true,

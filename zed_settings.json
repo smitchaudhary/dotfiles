@@ -107,7 +107,7 @@
   "languages": {
     "Python": {
       "enable_language_server": true,
-      "language_servers": ["basedpyright", "ruff"],
+      "language_servers": ["!basedpyright", "ruff"],
       "format_on_save": "on",
       "formatter": [
         {
@@ -143,9 +143,6 @@
   },
   "notification_panel": {
     "button": false
-  },
-  "chat_panel": {
-    "button": "never"
   },
   "seed_search_query_from_cursor": "always",
   "auto_signature_help": true,

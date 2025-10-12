@@ -27,3 +27,10 @@ editor = "vim"
 behavior = "own"
 backend = "ssh"
 key = "~/.ssh/id_ed25519.pub"
+
+[[--scope]]
+--when.repositories = ["~/Documents/Foyer"]
+[--scope.user]
+email = "smit@foyer.work"
+[--scope.signing]
+key = "~/.ssh/id_ed25519_foyer.pub"

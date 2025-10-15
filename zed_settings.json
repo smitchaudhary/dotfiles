@@ -74,8 +74,8 @@
   "base_keymap": "VSCode",
   "theme": {
     "mode": "system",
-    "dark": "Gruvbox Dark Hard",
-    "light": "Gruvbox Light Hard"
+    "dark": "Dracula Solid",
+    "light": "Catppuccin Latte"
   },
   "vim_mode": true,
   "relative_line_numbers": true,
@@ -110,12 +110,8 @@
       "language_servers": ["!basedpyright", "ruff"],
       "format_on_save": "on",
       "formatter": [
-        {
-          "code_actions": {
-            "source.organizeImports.ruff": true,
-            "source.fixAll.ruff": true
-          }
-        },
+        { "code_action": "source.organizeImports.ruff" },
+        { "code_action": "source.fixAll.ruff" },
         {
           "language_server": {
             "name": "ruff"

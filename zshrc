@@ -17,6 +17,7 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 
 alias ls='ls -GFh'
 alias cls='clear'
+alias rm='gomi'
 
 # Useful support for interacting with Terminal.app or other terminal programs
 [ -r "/etc/zshrc_$TERM_PROGRAM" ] && . "/etc/zshrc_$TERM_PROGRAM"

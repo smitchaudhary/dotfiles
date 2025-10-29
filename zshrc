@@ -132,3 +132,7 @@ eval "$(pyenv init -)"
 
 # opencode
 export PATH=/Users/smit/.opencode/bin:$PATH
+
+eval "$(zoxide init zsh)"
+
+# zprof # To profile

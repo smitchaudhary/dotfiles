@@ -111,6 +111,8 @@ alias jcm="jj commit -m"
 alias jdm="jj describe -m"
 alias jd="jj diff"
 alias jn="jj new"
+alias jch="jj bookmark list | awk -F: '{print \$1}' | fzf | xargs -I ZZZ jj new ZZZ"
+alias jchr="jj bookmark list --remote origin | awk '/^[^ ]/ {name=\$1; sub(/:\$/, \"\", name); has_at = (name ~ /@/) ? 1 : 0} /@origin/ {if (has_at) print name; else print name \"@origin\"}' | fzf | xargs -I ZZZ sh -c 'jj bookmark track ZZZ; jj new ZZZ'"
 
 # Load zsh-async for jj prompt support
 # Add zsh-async to FPATH and autoload it

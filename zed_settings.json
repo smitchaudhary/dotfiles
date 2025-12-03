@@ -74,8 +74,8 @@
   "base_keymap": "VSCode",
   "theme": {
     "mode": "system",
-    "dark": "Dracula Solid",
-    "light": "Catppuccin Latte"
+    "dark": "Ayu Dark",
+    "light": "Gruvbox Light Hard"
   },
   "vim_mode": true,
   "relative_line_numbers": "wrapped",
@@ -107,7 +107,7 @@
   "languages": {
     "Python": {
       "enable_language_server": true,
-      "language_servers": ["!basedpyright", "ruff"],
+      "language_servers": ["!basedpyright", "ruff", "ty"],
       "format_on_save": "on",
       "formatter": [
         { "code_action": "source.organizeImports.ruff" },
@@ -151,5 +151,6 @@
   "on_last_window_closed": "quit_app",
   "search": {
     "button": false
-  }
+  },
+  "colorize_brackets": true
 }

@@ -8,14 +8,13 @@ email = "smitchaudhary10@gmail.com"
 tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
 e = ["edit"]
 pull = ["git", "fetch"]
-push = ["git", "push", "--allow-new"]
+push = ["git", "push"]
 
 [revset-aliases]
 "closest_bookmark(to)" = "heads(::to & bookmarks())"
 
-[git]
-push-new-bookmarks = true
-
+[remotes.origin]
+auto-track-bookmarks = "glob:*"
 
 [ui]
 default-command = "log"

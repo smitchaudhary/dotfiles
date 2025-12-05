@@ -13,9 +13,6 @@ push = ["git", "push"]
 [revset-aliases]
 "closest_bookmark(to)" = "heads(::to & bookmarks())"
 
-[remotes.origin]
-auto-track-bookmarks = "glob:*"
-
 [ui]
 default-command = "log"
 diff-editor = ":builtin"

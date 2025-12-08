@@ -127,10 +127,6 @@ source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 # This is to enable syntax highlighting for zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
 . "$HOME/.local/bin/env"
 
 # opencode

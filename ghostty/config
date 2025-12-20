@@ -1,6 +1,36 @@
-theme = "Catppuccin Mocha"
-font-size = 19
+# Theme
+theme = "Oxocarbon"
 background-blur-radius = 20
-background-opacity = 0.8
+background-opacity = 0.9
+
+# General
 auto-update= "check"
 quit-after-last-window-closed="true"
+auto-update-channel = tip
+
+#Fonts
+font-family = Berkeley Mono Nerd Font
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+font-size = 16
+
+# Misc
+shell-integration-features = no-title,no-cursor
+title = " "
+mouse-hide-while-typing = true
+macos-titlebar-proxy-icon = hidden
+
+# Quick Terminal
+quick-terminal-position = center
+quick-terminal-size = 72%,72%
+quick-terminal-animation-duration = 0
+quick-terminal-space-behavior = remain
+
+# Keybinds
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
+
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+custom-shader = ./shaders/cursor_trail.glsl

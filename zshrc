@@ -10,7 +10,10 @@ fi
 # zmodload zsh/zprof
 
 #For homebrew to work
-eval $(/opt/homebrew/bin/brew shellenv)
+export HOMEBREW_PREFIX="/opt/homebrew"
+export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$PATH"
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}"
+export MANPATH="$HOMEBREW_PREFIX/share/man:${MANPATH:-}"
 
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
@@ -38,7 +41,12 @@ setopt HIST_SAVE_NO_DUPS      # Remove duplicates in the history file.
 setopt SHARE_HISTORY          # Share history between all sessions.
 
 # Set up fzf key bindings and fuzzy completion
-source <(fzf --zsh)
+if [[ -r /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]]; then
+  source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+fi
+if [[ -r /opt/homebrew/opt/fzf/shell/completion.zsh ]]; then
+  source /opt/homebrew/opt/fzf/shell/completion.zsh
+fi
 
 # For Mojo
 export MODULAR_HOME="$HOME/.modular"

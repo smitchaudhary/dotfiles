@@ -28,7 +28,7 @@ quick-terminal-animation-duration = 0
 quick-terminal-space-behavior = remain
 
 # Keybinds
-keybind = global:ctrl+grave_accent=toggle_quick_terminal
+keybind = global:§=toggle_quick_terminal
 
 # Cursor
 cursor-style = block

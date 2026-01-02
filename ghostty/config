@@ -7,6 +7,7 @@ background-opacity = 0.9
 auto-update= "check"
 quit-after-last-window-closed="true"
 auto-update-channel = tip
+maximize = true
 
 #Fonts
 font-family = Berkeley Mono Nerd Font

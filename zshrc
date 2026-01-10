@@ -121,7 +121,18 @@ alias jd="jj diff"
 alias jn="jj new"
 alias jb="jj b l"
 alias jch="jj bookmark list | awk -F: '{print \$1}' | fzf | xargs -I ZZZ jj new ZZZ"
-alias jchr="jj bookmark list --all-remotes | awk '/^[^ ]/ && !/@/ {name=\$1; sub(/:$/, \"\", name)} /^[^ ].*@/ && !/@git:/ {n=\$1; sub(/:$/, \"\", n); print n} /^  @/ && !/@git:/ {remote=\$1; sub(/^@/, \"\", remote); sub(/:$/, \"\", remote); print name \"@\" remote}' | fzf | xargs -I ZZZ sh -c 'bookmark=\"\${ZZZ%@*}\"; remote=\"\${ZZZ#*@}\"; jj bookmark track \"\$bookmark\" --remote=\"\$remote\"; jj new ZZZ'"
+function jchr() {
+  local selection=$(jj bookmark list --all-remotes | awk '
+    /^[^ ]/ && !/@/ {name=$1; sub(/:$/, "", name)}
+    /^[^ ].*@/ && !/@git:/ {n=$1; sub(/:$/, "", n); print n}
+    /^  @/ && !/@git:/ {remote=$1; sub(/^@/, "", remote); sub(/:$/, "", remote); print name "@" remote}
+  ' | fzf)
+  [[ -n "$selection" ]] || return
+  local bookmark="${selection%@*}"
+  local remote="${selection#*@}"
+  jj bookmark track "$bookmark" --remote="$remote"
+  jj new "$selection"
+}
 
 # Load zsh-async for jj prompt support
 # Add zsh-async to FPATH and autoload it

@@ -103,7 +103,7 @@
     "activate_on_close": "left_neighbour",
     "file_icons": true,
   },
-  "icon_theme": "Material Icon Theme",
+  "icon_theme": "Modern Icons (Light)",
   "languages": {
     "Python": {
       "enable_language_server": true,

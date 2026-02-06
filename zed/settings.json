@@ -5,6 +5,7 @@
     },
   },
   "edit_predictions": {
+    "provider": "mercury",
     "mode": "subtle",
     "enabled_in_text_threads": false,
   },
@@ -63,9 +64,6 @@
     },
     "play_sound_when_agent_done": true,
     "use_modifier_to_send": true,
-  },
-  "features": {
-    "edit_prediction_provider": "zed",
   },
   "telemetry": {
     "diagnostics": false,

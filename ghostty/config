@@ -1,5 +1,6 @@
 # Theme
 theme = "Oxocarbon"
+palette-generate = false
 background-blur-radius = 20
 background-opacity = 0.9
 
@@ -8,6 +9,7 @@ auto-update= "check"
 quit-after-last-window-closed="true"
 auto-update-channel = tip
 maximize = true
+window-decoration = none
 
 #Fonts
 font-family = Berkeley Mono Nerd Font

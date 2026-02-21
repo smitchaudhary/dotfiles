@@ -1,4 +1,22 @@
 {
+  "ssh_connections": [
+    {
+      "host": "pi.home",
+      "username": "smit",
+      "args": [],
+      "projects": [],
+    },
+    {
+      "host": "pi.home",
+      "username": "smit",
+      "args": [],
+      "projects": [
+        {
+          "paths": ["/home/smit"],
+        },
+      ],
+    },
+  ],
   "agent_servers": {
     "gemini": {
       "ignore_system_version": false,

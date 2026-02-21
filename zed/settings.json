@@ -76,8 +76,17 @@
   "base_keymap": "VSCode",
   "theme": {
     "mode": "system",
-    "dark": "Ayu Dark",
+    "dark": "Gruvbox Dark Hard",
     "light": "Gruvbox Light Hard",
+  },
+  "theme_overrides": {
+    "Gruvbox Dark Hard": {
+      "toolbar.background": "#000000FF",
+      "tab.active_background": "#000000FF",
+      "editor.background": "#000000FF",
+      "editor.gutter.background": "#000000FF",
+      "terminal.background": "#000000FF",
+    },
   },
   "vim_mode": true,
   "relative_line_numbers": "wrapped",

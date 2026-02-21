@@ -5,11 +5,15 @@
     },
   },
   "edit_predictions": {
-    "provider": "mercury",
+    "provider": "supermaven",
     "mode": "subtle",
     "enabled_in_text_threads": false,
   },
   "agent": {
+    "inline_assistant_model": {
+      "provider": "anthropic",
+      "model": "claude-opus-4-6-thinking-latest",
+    },
     "profiles": {
       "write": {
         "name": "Write",
@@ -59,8 +63,8 @@
     },
     "default_profile": "write",
     "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-sonnet-4-thinking",
+      "provider": "anthropic",
+      "model": "claude-opus-4-6-thinking-latest",
     },
     "play_sound_when_agent_done": true,
     "use_modifier_to_send": true,

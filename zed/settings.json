@@ -1,14 +1,7 @@
 {
   "ssh_connections": [
     {
-      "host": "pi.home",
-      "username": "smit",
-      "args": [],
-      "projects": [],
-    },
-    {
-      "host": "pi.home",
-      "username": "smit",
+      "host": "rpi",
       "args": [],
       "projects": [
         {

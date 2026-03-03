@@ -16,6 +16,7 @@ push = ["git", "push"]
 [ui]
 default-command = "log"
 diff-editor = ":builtin"
+diff-formatter = ":git"
 merge-editor = ":builtin"
 editor = "vim"
 

@@ -17,7 +17,7 @@ push = ["git", "push"]
 default-command = "log"
 diff-editor = ":builtin"
 diff-formatter = ":git"
-merge-editor = ":builtin"
+merge-editor = "vscode"
 editor = "vim"
 
 [signing]

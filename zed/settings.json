@@ -17,7 +17,7 @@
     },
   },
   "edit_predictions": {
-    "provider": "supermaven",
+    "provider": "mercury",
     "mode": "subtle",
     "enabled_in_text_threads": false,
   },

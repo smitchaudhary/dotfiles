@@ -11,8 +11,9 @@
     },
   ],
   "agent_servers": {
-    "gemini": {
-      "ignore_system_version": false,
+    "gemini-custom": {
+      "type": "custom",
+      "command": "gemini",
     },
   },
   "edit_predictions": {

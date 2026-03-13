@@ -120,6 +120,7 @@ alias jdm="jj describe -m"
 alias jd="jj diff"
 alias jn="jj new"
 alias jb="jj b l"
+alias jtp="jj tug && jj push"
 alias jch="jj bookmark list | awk -F: '{print \$1}' | fzf | xargs -I ZZZ jj new ZZZ"
 function jchr() {
   local selection=$(jj bookmark list --all-remotes | awk '

@@ -52,6 +52,9 @@ fi
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$PATH"
 
+# UV package manager - delay updates for security vetting period
+export UV_EXCLUDE_NEWER="7 days"
+
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 #export PATH="$PATH:$HOME/.rvm/bin"

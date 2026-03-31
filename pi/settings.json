@@ -1,0 +1,42 @@
+{
+  "lastChangelogVersion": "0.64.0",
+  "defaultProvider": "zai",
+  "defaultModel": "glm-5",
+  "defaultThinkingLevel": "high",
+  "compaction": {
+    "enabled": false
+  },
+  "theme": "gruvbox-dark",
+  "editorPaddingX": 2,
+  "steeringMode": "one-at-a-time",
+  "followUpMode": "one-at-a-time",
+  "packages": [
+    "npm:pi-amplike",
+    "npm:@manojlds/ralphi",
+    "npm:@ifi/oh-pi-themes",
+    "npm:pi-librarian",
+    "npm:pi-playwright"
+  ],
+  "quietStartup": false,
+  "enabledModels": [
+    "anthropic/claude-opus-4-6",
+    "anthropic/claude-sonnet-4-6",
+    "cerebras/gpt-oss-120b",
+    "google/gemini-3.1-pro-preview",
+    "google/gemini-flash-latest",
+    "google/gemini-flash-lite-latest",
+    "groq/openai/gpt-oss-120b",
+    "kimi-coding/k2p5",
+    "minimax/MiniMax-M2.7",
+    "minimax/MiniMax-M2.7-highspeed",
+    "mistral/codestral-latest",
+    "openai/gpt-5.3-codex",
+    "openai/gpt-5.4",
+    "zai/glm-4.7",
+    "zai/glm-5",
+    "zai/glm-5-turbo",
+    "opencode/mimo-v2-pro-free",
+    "opencode/nemotron-3-super-free",
+    "fireworks-firepass/accounts/fireworks/routers/kimi-k2p5-turbo"
+  ]
+}

@@ -17,6 +17,9 @@
     "npm:pi-librarian",
     "npm:pi-playwright"
   ],
+  "skills": [
+    "~/Documents/Work/dotfiles/pi/skills"
+  ],
   "quietStartup": false,
   "enabledModels": [
     "anthropic/claude-opus-4-6",

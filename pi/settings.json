@@ -12,7 +12,6 @@
   "followUpMode": "one-at-a-time",
   "packages": [
     "npm:pi-amplike",
-    "npm:@manojlds/ralphi",
     "npm:@ifi/oh-pi-themes",
     "npm:pi-librarian",
     "npm:pi-playwright"
@@ -20,7 +19,7 @@
   "skills": [
     "~/Documents/Work/dotfiles/pi/skills"
   ],
-  "quietStartup": false,
+  "quietStartup": true,
   "enabledModels": [
     "anthropic/claude-opus-4-6",
     "anthropic/claude-sonnet-4-6",

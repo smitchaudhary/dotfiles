@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.66.1",
+  "lastChangelogVersion": "0.67.6",
   "defaultProvider": "fireworks-firepass",
   "defaultModel": "accounts/fireworks/routers/kimi-k2p5-turbo",
   "defaultThinkingLevel": "high",
@@ -26,7 +26,7 @@
     "google/gemini-flash-latest",
     "google/gemini-flash-lite-latest",
     "groq/openai/gpt-oss-120b",
-    "kimi-coding/k2p5",
+
     "minimax/MiniMax-M2.7",
     "minimax/MiniMax-M2.7-highspeed",
     "mistral/codestral-latest",

@@ -1,5 +1,21 @@
 {
   "providers": {
+    "moonshot": {
+      "baseUrl": "https://api.moonshot.ai/v1",
+      "api": "openai-completions",
+      "apiKey": "MOONSHOT_API_KEY",
+      "models": [
+        {
+          "id": "kimi-k2.6",
+          "name": "kimi-k2.6",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 256000,
+          "maxTokens": 256000,
+          "cost": { "input": 0, "output": 0, "cacheRead": 0, "cacheWrite": 0 }
+        }
+      ]
+    },
     "fireworks-firepass": {
       "baseUrl": "https://api.fireworks.ai/inference/v1",
       "api": "openai-completions",

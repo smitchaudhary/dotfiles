@@ -4,6 +4,9 @@
       "baseUrl": "https://api.moonshot.ai/v1",
       "api": "openai-completions",
       "apiKey": "MOONSHOT_API_KEY",
+      "compat": {
+        "supportsDeveloperRole": false
+      },
       "models": [
         {
           "id": "kimi-k2.6",

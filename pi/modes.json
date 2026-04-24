@@ -18,8 +18,8 @@
       "thinkingLevel": "high"
     },
     "Free": {
-      "provider": "zai",
-      "modelId": "glm-5",
+      "provider": "minimax",
+      "modelId": "MiniMax-M2.7",
       "thinkingLevel": "xhigh"
     }
   }

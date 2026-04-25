@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.70.0",
+  "lastChangelogVersion": "0.70.2",
   "defaultProvider": "fireworks-firepass",
   "defaultModel": "accounts/fireworks/routers/kimi-k2p5-turbo",
   "defaultThinkingLevel": "high",
@@ -18,9 +18,6 @@
   ],
   "skills": ["~/Documents/Work/dotfiles/pi/skills"],
   "quietStartup": true,
-  "terminal": {
-    "showTerminalProgress": true
-  },
   "enabledModels": [
     "anthropic/claude-opus-4-6",
     "anthropic/claude-sonnet-4-6",
@@ -37,5 +34,8 @@
     "fireworks-firepass/accounts/fireworks/routers/kimi-k2p5-turbo",
     "deepseek/deepseek-v4-flash",
     "deepseek/deepseek-v4-pro"
-  ]
+  ],
+  "terminal": {
+    "showTerminalProgress": true
+  }
 }

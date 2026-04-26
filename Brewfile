@@ -43,8 +43,6 @@ brew "zsh-async"
 brew "zsh-syntax-highlighting"
 
 cask "antigravity"
-cask "apptivate"
-cask "athas"
 cask "atom"
 cask "bitwarden"
 cask "cap"

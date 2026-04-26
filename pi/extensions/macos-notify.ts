@@ -24,12 +24,19 @@ function makeUserWatcher(pi: ExtensionAPI) {
 
       // Check 2: If inside tmux, is pi's own pane the active one?
       if (process.env.TMUX) {
-        const { stdout: paneActive } = await pi
-          .exec("tmux", ["display-message", "-p", "#{pane_active}"])
+        const paneId = process.env.TMUX_PANE;
+        const { stdout: status } = await pi
+          .exec("tmux", [
+            "display-message",
+            "-p",
+            "-t",
+            paneId,
+            "#{window_active}#{pane_active}",
+          ])
           .catch(() => ({ stdout: "" }));
 
-        // pane_active is "1" when this specific pane is focused
-        return paneActive.trim() === "1";
+        // Returns "11" only if pi's window is active AND pi's pane is active within it
+        return status.trim() === "11";
       }
 
       // Terminal is frontmost, no tmux — assume they're watching

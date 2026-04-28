@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.70.2",
-  "defaultProvider": "fireworks-firepass",
-  "defaultModel": "accounts/fireworks/routers/kimi-k2p5-turbo",
+  "lastChangelogVersion": "0.71.1",
+  "defaultProvider": "deepseek",
+  "defaultModel": "deepseek-v4-flash",
   "defaultThinkingLevel": "high",
   "compaction": {
     "enabled": false
@@ -37,5 +37,6 @@
   ],
   "terminal": {
     "showTerminalProgress": true
-  }
+  },
+  "transport": "websocket-cached"
 }

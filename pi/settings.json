@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.71.1",
+  "lastChangelogVersion": "0.72.1",
   "defaultProvider": "deepseek",
   "defaultModel": "deepseek-v4-flash",
   "defaultThinkingLevel": "high",
@@ -16,7 +16,6 @@
     "npm:pi-librarian",
     "npm:pi-playwright"
   ],
-  "skills": ["~/Documents/Work/dotfiles/pi/skills"],
   "quietStartup": true,
   "enabledModels": [
     "anthropic/claude-opus-4-6",

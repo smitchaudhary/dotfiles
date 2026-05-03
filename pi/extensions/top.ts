@@ -7,7 +7,8 @@
  */
 
 import type { ExtensionAPI, ExtensionCommandContext } from "@mariozechner/pi-coding-agent";
-import { matchesKey, Key, truncateToWidth } from "@mariozechner/pi-tui";
+import { getMarkdownTheme } from "@mariozechner/pi-coding-agent";
+import { matchesKey, Key, Markdown } from "@mariozechner/pi-tui";
 
 // ---------------------------------------------------------------------------
 // Tool call one-liners
@@ -71,27 +72,41 @@ function findLastUserIndex(branch: any[]): number {
 // ---------------------------------------------------------------------------
 
 function makeViewer(
-	lines: string[],
+	text: string,
 	tui: { terminal: { rows: number }; requestRender(): void },
 	theme: any,
 	done: (v: undefined) => void,
 ) {
 	let scroll = 0;
+	let cachedWidth = -1;
+	let cachedLines: string[] = [];
+	let md: Markdown;
 
 	const pageSize = () => Math.max(5, tui.terminal.rows - 6);
-	const total = lines.length;
+
+	const renderLines = (width: number) => {
+		if (cachedWidth !== width) {
+			md = new Markdown(text, 0, 0, getMarkdownTheme());
+			cachedLines = md.render(width);
+			cachedWidth = width;
+		}
+		return cachedLines;
+	};
+
+	const totalLines = () => renderLines(cachedWidth === -1 ? 80 : cachedWidth).length;
 
 	const clamp = () => {
-		const max = Math.max(0, total - pageSize());
+		const max = Math.max(0, totalLines() - pageSize());
 		scroll = Math.max(0, Math.min(scroll, max));
 	};
 
 	return {
 		render(width: number) {
+			const lines = renderLines(width);
 			clamp();
 			const page = pageSize();
 			const visible = lines.slice(scroll, scroll + page);
-			const endLine = Math.min(scroll + page, total);
+			const endLine = Math.min(scroll + page, lines.length);
 
 			const out: string[] = [];
 
@@ -99,14 +114,14 @@ function makeViewer(
 			out.push(theme.fg("borderMuted", "  " + "─".repeat(Math.max(0, width - 4))));
 
 			for (const line of visible) {
-				out.push("  " + truncateToWidth(line, Math.max(0, width - 3)));
+				out.push("  " + line);
 			}
 
 			// Pad to a consistent content height
 			for (let i = page - visible.length; i > 0; i--) out.push("");
 
-			const pos = total > page
-				? theme.fg("dim", `  ${scroll + 1}–${endLine} / ${total}`)
+			const pos = lines.length > page
+				? theme.fg("dim", `  ${scroll + 1}–${endLine} / ${lines.length}`)
 				: "";
 			out.push(pos + theme.fg("dim", "  ↑/k ↓/j PgUp/b PgDn/f g/G esc/q close"));
 
@@ -127,14 +142,18 @@ function makeViewer(
 			else if (matchesKey(data, Key.pageDown) || data === " " || data === "f") scroll += page;
 			else if (matchesKey(data, Key.pageUp) || data === "b") scroll -= page;
 			else if (matchesKey(data, Key.home) || data === "g") scroll = 0;
-			else if (matchesKey(data, Key.end) || data === "G") scroll = total;
+			else if (matchesKey(data, Key.end) || data === "G") scroll = totalLines();
 			else return;
 
 			clamp();
 			if (scroll !== prev) tui.requestRender();
 		},
 
-		invalidate() {},
+		invalidate() {
+			cachedWidth = -1;
+			cachedLines = [];
+			md?.invalidate();
+		},
 	};
 }
 
@@ -173,7 +192,7 @@ export default function (pi: ExtensionAPI) {
 			const text = blocks.join("\n\n───\n\n");
 
 			await ctx.ui.custom<void>(
-				(tui, theme, _kb, done) => makeViewer(text.split("\n"), tui, theme, done),
+				(tui, theme, _kb, done) => makeViewer(text, tui, theme, done),
 				{
 					overlay: true,
 					overlayOptions: {

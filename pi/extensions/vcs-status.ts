@@ -466,12 +466,6 @@ export default function (pi: ExtensionAPI) {
     refreshAfterFetch(ctx);
   });
 
-  pi.on("session_switch", async (_event, ctx) => {
-    invalidateCache();
-    updateFooter(ctx);
-    refreshAfterFetch(ctx);
-  });
-
   pi.on("tool_result", async (event, ctx) => {
     if (event.toolName === "bash" || event.toolName === "write" || event.toolName === "edit") {
       invalidateCache();

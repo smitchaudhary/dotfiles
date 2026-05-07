@@ -6,9 +6,9 @@
  * Navigation: ↑/k ↓/j PgUp/b PgDn/f/space g/G esc/q
  */
 
-import type { ExtensionAPI, ExtensionCommandContext } from "@mariozechner/pi-coding-agent";
-import { getMarkdownTheme } from "@mariozechner/pi-coding-agent";
-import { matchesKey, Key, Markdown } from "@mariozechner/pi-tui";
+import type { ExtensionAPI, ExtensionCommandContext } from "@earendil-works/pi-coding-agent";
+import { getMarkdownTheme } from "@earendil-works/pi-coding-agent";
+import { matchesKey, Key, Markdown } from "@earendil-works/pi-tui";
 
 // ---------------------------------------------------------------------------
 // Tool call one-liners

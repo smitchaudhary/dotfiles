@@ -1,6 +1,6 @@
 {
   "lastChangelogVersion": "0.74.0",
-  "defaultProvider": "deepseek",
+  "defaultProvider": "opencode-go",
   "defaultModel": "deepseek-v4-flash",
   "defaultThinkingLevel": "high",
   "compaction": {
@@ -18,21 +18,20 @@
   ],
   "quietStartup": true,
   "enabledModels": [
-    "anthropic/claude-opus-4-6",
+    "anthropic/claude-opus-4-7",
     "anthropic/claude-sonnet-4-6",
     "cerebras/gpt-oss-120b",
     "google/gemini-3.1-pro-preview",
     "google/gemini-flash-latest",
-    "google/gemini-flash-lite-latest",
     "groq/openai/gpt-oss-120b",
-    "minimax/MiniMax-M2.7",
-    "minimax/MiniMax-M2.7-highspeed",
-    "moonshot/kimi-k2.6",
     "openai/gpt-5.3-codex",
-    "openai/gpt-5.4",
-    "fireworks-firepass/accounts/fireworks/routers/kimi-k2p5-turbo",
+    "openai/gpt-5.5",
     "deepseek/deepseek-v4-flash",
-    "deepseek/deepseek-v4-pro"
+    "deepseek/deepseek-v4-pro",
+    "opencode-go/glm-5.1",
+    "opencode-go/kimi-k2.6",
+    "opencode-go/deepseek-v4-flash",
+    "opencode-go/deepseek-v4-pro"
   ],
   "terminal": {
     "showTerminalProgress": true

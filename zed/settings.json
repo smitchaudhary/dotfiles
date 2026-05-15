@@ -1,4 +1,5 @@
 {
+  "cli_default_open_behavior": "new_window",
   "outline_panel": {
     "dock": "left",
   },
@@ -22,13 +23,13 @@
     },
   ],
   "agent_servers": {
+    "codex-acp": {
+      "type": "registry",
+    },
     "factory-droid": {
       "type": "registry",
     },
     "opencode": {
-      "type": "registry",
-    },
-    "mistral-vibe": {
       "type": "registry",
     },
     "gemini": {
@@ -175,7 +176,7 @@
       ],
     },
     "Markdown": {
-      "soft_wrap": "preferred_line_length",
+      "soft_wrap": "bounded",
     },
   },
   "git": {

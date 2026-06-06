@@ -84,8 +84,8 @@
     #aws                     # aws profile (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
     #aws_eb_env              # aws elastic beanstalk environment (https://aws.amazon.com/elasticbeanstalk/)
     #azure                   # azure account name (https://docs.microsoft.com/en-us/cli/azure)
-    gcloud                  # google cloud cli account and project (https://cloud.google.com/)
-    google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
+    #gcloud                  # google cloud cli account and project (https://cloud.google.com/)
+    #google_app_cred         # google application credentials (https://cloud.google.com/docs/authentication/production)
     #toolbox                 # toolbox name (https://github.com/containers/toolbox)
     #context                 # user@hostname
     #nordvpn                 # nordvpn connection status, linux only (https://nordvpn.com/)
@@ -106,7 +106,7 @@
     #todo                    # todo items (https://github.com/todotxt/todo.txt-cli)
     #timewarrior             # timewarrior tracking status (https://timewarrior.net/)
     #taskwarrior             # taskwarrior task count (https://taskwarrior.org/)
-    per_directory_history   # Oh My Zsh per-directory-history local/global indicator
+    #per_directory_history   # Oh My Zsh per-directory-history local/global indicator
     # cpu_arch              # CPU architecture
     # time                  # current time
     # =========================[ Line #2 ]=========================

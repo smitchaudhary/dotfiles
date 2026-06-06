@@ -49,8 +49,8 @@ if [[ -r /opt/homebrew/opt/fzf/shell/completion.zsh ]]; then
 fi
 
 # For Mojo
-export MODULAR_HOME="$HOME/.modular"
-export PATH="$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$PATH"
+# export MODULAR_HOME="$HOME/.modular"
+# export PATH="$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$PATH"
 
 # UV package manager - delay updates for security vetting period
 export UV_EXCLUDE_NEWER="7 days"
@@ -143,6 +143,10 @@ function jchr() {
 fpath+=/opt/homebrew/opt/zsh-async/share/zsh/site-functions
 autoload -Uz async && async
 
+# Powerlevel10k checks whether the shell is running over SSH during startup.
+# This local-only default skips that detection for faster shell launches.
+typeset -gx P9K_SSH=0 _P9K_SSH_TTY=$TTY
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
@@ -152,9 +156,12 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 . "$HOME/.local/bin/env"
 
-# opencode
-export PATH=/Users/smit/.opencode/bin:$PATH
-
 eval "$(zoxide init zsh)"
+
+# Add to PATH
+export PATH=/Users/smit/.opencode/bin:$PATH
+export PATH="/Users/smit/.antigravity/antigravity/bin:$PATH"
+export PATH="/Users/smit/.amp/bin:$PATH"
+export PATH="/Users/smit/.local/bin:$PATH"
 
 # zprof # To profile

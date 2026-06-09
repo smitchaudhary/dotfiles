@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.78.1",
+  "lastChangelogVersion": "0.79.4",
   "defaultProvider": "opencode-go",
   "defaultModel": "deepseek-v4-flash",
   "defaultThinkingLevel": "high",
@@ -18,7 +18,7 @@
   ],
   "quietStartup": true,
   "enabledModels": [
-    "anthropic/claude-opus-4-7",
+    "anthropic/claude-opus-4-8",
     "anthropic/claude-sonnet-4-6",
     "cerebras/gpt-oss-120b",
     "google/gemini-3.1-pro-preview",
@@ -29,7 +29,7 @@
     "deepseek/deepseek-v4-flash",
     "deepseek/deepseek-v4-pro",
     "opencode-go/glm-5.1",
-    "opencode-go/kimi-k2.6",
+    "opencode-go/kimi-k2.7-code",
     "opencode-go/deepseek-v4-flash",
     "opencode-go/deepseek-v4-pro"
   ],

@@ -1,12 +1,17 @@
 /**
- * top — View the full latest assistant turn from its first line
+ * top — Browse assistant turns
  *
  * Commands: /top
  *
- * Navigation: ↑/k ↓/j PgUp/b PgDn/f/space g/G esc/q
+ * Navigation:
+ *   n/p — next/previous turn
+ *   ↑/k ↓/j — scroll line by line
+ *   PgUp/b PgDn/f/space — page up/down
+ *   g/G — top/bottom
+ *   esc/q — close
  */
 
-import type { ExtensionAPI, ExtensionCommandContext } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { getMarkdownTheme } from "@earendil-works/pi-coding-agent";
 import { matchesKey, Key, Markdown } from "@earendil-works/pi-tui";
 
@@ -17,19 +22,19 @@ import { matchesKey, Key, Markdown } from "@earendil-works/pi-tui";
 type ToolSummarizer = (args: Record<string, unknown>) => string;
 
 const toolSummarizers: Record<string, ToolSummarizer> = {
-	edit:  (a) => `[edit: ${a.path ?? "?"}]`,
-	write: (a) => `[write: ${a.path ?? "?"}]`,
-	read:  (a) => `[read: ${a.path ?? "?"}]`,
-	bash:  (a) => `[bash: ${String(a.command ?? "?").slice(0, 80)}]`,
-	grep:  (a) => `[grep: ${a.pattern ?? a.regex ?? "?"}]`,
-	rg:    (a) => `[rg: ${a.pattern ?? a.regex ?? "?"}]`,
-	ls:    (a) => `[ls: ${a.path ?? "."}]`,
+  edit: (a) => `[edit: ${a.path ?? "?"}]`,
+  write: (a) => `[write: ${a.path ?? "?"}]`,
+  read: (a) => `[read: ${a.path ?? "?"}]`,
+  bash: (a) => `[bash: ${String(a.command ?? "?").slice(0, 80)}]`,
+  grep: (a) => `[grep: ${a.pattern ?? a.regex ?? "?"}]`,
+  rg: (a) => `[rg: ${a.pattern ?? a.regex ?? "?"}]`,
+  ls: (a) => `[ls: ${a.path ?? "."}]`,
 };
 
 function summarizeToolCall(tc: any): string {
-	const summarizer = toolSummarizers[tc.name ?? ""];
-	if (summarizer) return summarizer(tc.arguments ?? {});
-	return `[${tc.name ?? "?"}]`;
+  const summarizer = toolSummarizers[tc.name ?? ""];
+  if (summarizer) return summarizer(tc.arguments ?? {});
+  return `[${tc.name ?? "?"}]`;
 }
 
 // ---------------------------------------------------------------------------
@@ -38,33 +43,84 @@ function summarizeToolCall(tc: any): string {
 
 /** Collect text + tool summaries from a single assistant message. */
 function formatAssistantBlock(message: any, indent: string): string {
-	if (!Array.isArray(message.content)) return "";
+  if (!Array.isArray(message.content)) return "";
 
-	const texts: string[] = [];
-	const tools: string[] = [];
+  const texts: string[] = [];
+  const tools: string[] = [];
 
-	for (const block of message.content) {
-		if (block?.type === "text" && typeof block.text === "string") {
-			const t = block.text.trim();
-			if (t) texts.push(t);
-		} else if (block?.type === "toolCall") {
-			tools.push(indent + summarizeToolCall(block));
-		}
-	}
+  for (const block of message.content) {
+    if (block?.type === "text" && typeof block.text === "string") {
+      const t = block.text.trim();
+      if (t) texts.push(t);
+    } else if (block?.type === "toolCall") {
+      tools.push(indent + summarizeToolCall(block));
+    }
+  }
 
-	const parts: string[] = [];
-	if (texts.length > 0) parts.push(texts.join("\n\n"));
-	if (tools.length > 0) parts.push(tools.join("\n"));
-	return parts.join("\n");
+  const parts: string[] = [];
+  if (texts.length > 0) parts.push(texts.join("\n\n"));
+  if (tools.length > 0) parts.push(tools.join("\n"));
+  return parts.join("\n");
 }
 
-/** Find the index of the latest user message in the branch. */
-function findLastUserIndex(branch: any[]): number {
-	for (let i = branch.length - 1; i >= 0; i--) {
-		const entry = branch[i];
-		if (entry?.type === "message" && entry.message?.role === "user") return i;
-	}
-	return -1;
+interface Turn {
+  index: number;
+  userText: string;
+  assistantText: string;
+}
+
+function extractUserText(message: any): string {
+  if (typeof message.content === "string") {
+    return message.content.trim();
+  }
+  if (Array.isArray(message.content)) {
+    return message.content
+      .filter((b: any) => b?.type === "text")
+      .map((b: any) => b.text)
+      .join("\n")
+      .trim();
+  }
+  return "";
+}
+
+/** Find all user/assistant turn pairs in the branch. */
+function findAllTurns(branch: any[]): Turn[] {
+  const turns: Turn[] = [];
+  let currentUserText = "";
+  let currentAssistantBlocks: string[] = [];
+  let turnIndex = -1;
+
+  for (const entry of branch) {
+    if (entry?.type !== "message") continue;
+    const msg = entry.message;
+    if (!msg) continue;
+
+    if (msg.role === "user") {
+      if (currentUserText !== "" || currentAssistantBlocks.length > 0) {
+        turns.push({
+          index: turnIndex,
+          userText: currentUserText,
+          assistantText: currentAssistantBlocks.join("\n\n───\n\n"),
+        });
+      }
+      turnIndex++;
+      currentUserText = extractUserText(msg);
+      currentAssistantBlocks = [];
+    } else if (msg.role === "assistant") {
+      const block = formatAssistantBlock(msg, "  ");
+      if (block) currentAssistantBlocks.push(block);
+    }
+  }
+
+  if (currentUserText !== "" || currentAssistantBlocks.length > 0) {
+    turns.push({
+      index: turnIndex,
+      userText: currentUserText,
+      assistantText: currentAssistantBlocks.join("\n\n───\n\n"),
+    });
+  }
+
+  return turns;
 }
 
 // ---------------------------------------------------------------------------
@@ -72,89 +128,138 @@ function findLastUserIndex(branch: any[]): number {
 // ---------------------------------------------------------------------------
 
 function makeViewer(
-	text: string,
-	tui: { terminal: { rows: number }; requestRender(): void },
-	theme: any,
-	done: (v: undefined) => void,
+  turns: Turn[],
+  initialIndex: number,
+  tui: { terminal: { rows: number }; requestRender(): void },
+  theme: any,
+  done: (v: undefined) => void,
 ) {
-	let scroll = 0;
-	let cachedWidth = -1;
-	let cachedLines: string[] = [];
-	let md: Markdown;
+  let currentTurn = initialIndex;
+  let scroll = 0;
+  let cachedWidth = -1;
+  let cachedLines: string[] = [];
+  let md: Markdown;
 
-	const pageSize = () => Math.max(5, tui.terminal.rows - 6);
+  const currentText = () => turns[currentTurn]?.assistantText ?? "";
 
-	const renderLines = (width: number) => {
-		if (cachedWidth !== width) {
-			md = new Markdown(text, 0, 0, getMarkdownTheme());
-			cachedLines = md.render(width);
-			cachedWidth = width;
-		}
-		return cachedLines;
-	};
+  const pageSize = () => Math.max(5, tui.terminal.rows - 6);
 
-	const totalLines = () => renderLines(cachedWidth === -1 ? 80 : cachedWidth).length;
+  const renderLines = (width: number) => {
+    if (cachedWidth !== width) {
+      md = new Markdown(currentText(), 0, 0, getMarkdownTheme());
+      cachedLines = md.render(width);
+      cachedWidth = width;
+    }
+    return cachedLines;
+  };
 
-	const clamp = () => {
-		const max = Math.max(0, totalLines() - pageSize());
-		scroll = Math.max(0, Math.min(scroll, max));
-	};
+  const totalLines = () =>
+    renderLines(cachedWidth === -1 ? 80 : cachedWidth).length;
 
-	return {
-		render(width: number) {
-			const lines = renderLines(width);
-			clamp();
-			const page = pageSize();
-			const visible = lines.slice(scroll, scroll + page);
-			const endLine = Math.min(scroll + page, lines.length);
+  const clamp = () => {
+    const max = Math.max(0, totalLines() - pageSize());
+    scroll = Math.max(0, Math.min(scroll, max));
+  };
 
-			const out: string[] = [];
+  const goToTurn = (idx: number) => {
+    if (idx < 0 || idx >= turns.length || idx === currentTurn) return;
+    currentTurn = idx;
+    scroll = 0;
+    cachedWidth = -1;
+    cachedLines = [];
+    md?.invalidate();
+    tui.requestRender();
+  };
 
-			out.push(theme.fg("accent", theme.bold("  Full Assistant Turn")));
-			out.push(theme.fg("borderMuted", "  " + "─".repeat(Math.max(0, width - 4))));
+  return {
+    render(width: number) {
+      const lines = renderLines(width);
+      clamp();
+      const page = pageSize();
+      const visible = lines.slice(scroll, scroll + page);
+      const endLine = Math.min(scroll + page, lines.length);
 
-			for (const line of visible) {
-				out.push("  " + line);
-			}
+      const out: string[] = [];
 
-			// Pad to a consistent content height
-			for (let i = page - visible.length; i > 0; i--) out.push("");
+      // Header: turn position + user prompt preview
+      const turnInfo = `Turn ${currentTurn + 1} of ${turns.length}`;
+      const userPreview = turns[currentTurn]?.userText ?? "";
+      const userLine =
+        userPreview.length > 0
+          ? "  " +
+            theme.fg(
+              "muted",
+              userPreview.slice(0, width - 6) +
+                (userPreview.length > width - 6 ? "…" : ""),
+            )
+          : "";
+      out.push(theme.fg("accent", theme.bold(`  ${turnInfo}`)));
+      if (userLine) out.push(userLine);
+      out.push(
+        theme.fg("borderMuted", "  " + "─".repeat(Math.max(0, width - 4))),
+      );
 
-			const pos = lines.length > page
-				? theme.fg("dim", `  ${scroll + 1}–${endLine} / ${lines.length}`)
-				: "";
-			out.push(pos + theme.fg("dim", "  ↑/k ↓/j PgUp/b PgDn/f g/G esc/q close"));
+      for (const line of visible) {
+        out.push("  " + line);
+      }
 
-			return out;
-		},
+      // Pad to a consistent content height
+      for (let i = page - visible.length; i > 0; i--) out.push("");
 
-		handleInput(data: string) {
-			if (matchesKey(data, Key.escape) || data === "q") {
-				done(undefined);
-				return;
-			}
+      const pos =
+        lines.length > page
+          ? theme.fg("dim", `  ${scroll + 1}–${endLine} / ${lines.length}`)
+          : "";
 
-			const prev = scroll;
-			const page = pageSize();
+      // Context-aware nav hints
+      const hints: string[] = [];
+      if (currentTurn > 0) hints.push("p prev");
+      if (currentTurn < turns.length - 1) hints.push("n next");
+      hints.push("↑/k ↓/j PgUp/b PgDn/f g/G esc/q");
 
-			if (matchesKey(data, Key.down) || data === "j") scroll++;
-			else if (matchesKey(data, Key.up) || data === "k") scroll--;
-			else if (matchesKey(data, Key.pageDown) || data === " " || data === "f") scroll += page;
-			else if (matchesKey(data, Key.pageUp) || data === "b") scroll -= page;
-			else if (matchesKey(data, Key.home) || data === "g") scroll = 0;
-			else if (matchesKey(data, Key.end) || data === "G") scroll = totalLines();
-			else return;
+      out.push(pos + theme.fg("dim", "  " + hints.join("  ")));
 
-			clamp();
-			if (scroll !== prev) tui.requestRender();
-		},
+      return out;
+    },
 
-		invalidate() {
-			cachedWidth = -1;
-			cachedLines = [];
-			md?.invalidate();
-		},
-	};
+    handleInput(data: string) {
+      if (matchesKey(data, Key.escape) || data === "q") {
+        done(undefined);
+        return;
+      }
+
+      // Turn navigation
+      if (data === "n" && currentTurn < turns.length - 1) {
+        goToTurn(currentTurn + 1);
+        return;
+      }
+      if (data === "p" && currentTurn > 0) {
+        goToTurn(currentTurn - 1);
+        return;
+      }
+
+      const prev = scroll;
+      const page = pageSize();
+
+      if (matchesKey(data, Key.down) || data === "j") scroll++;
+      else if (matchesKey(data, Key.up) || data === "k") scroll--;
+      else if (matchesKey(data, Key.pageDown) || data === " " || data === "f")
+        scroll += page;
+      else if (matchesKey(data, Key.pageUp) || data === "b") scroll -= page;
+      else if (matchesKey(data, Key.home) || data === "g") scroll = 0;
+      else if (matchesKey(data, Key.end) || data === "G") scroll = totalLines();
+      else return;
+
+      clamp();
+      if (scroll !== prev) tui.requestRender();
+    },
+
+    invalidate() {
+      cachedWidth = -1;
+      cachedLines = [];
+      md?.invalidate();
+    },
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -162,46 +267,29 @@ function makeViewer(
 // ---------------------------------------------------------------------------
 
 export default function (pi: ExtensionAPI) {
-	pi.registerCommand("top", {
-		description: "View the full latest assistant turn from its first line",
-		handler: async (_args, ctx) => {
-			const branch = ctx.sessionManager.getBranch();
+  pi.registerCommand("top", {
+    description: "Browse all assistant turns with n/p navigation",
+    handler: async (_args, ctx) => {
+      const branch = ctx.sessionManager.getBranch();
+      const turns = findAllTurns(branch);
 
-			const userIdx = findLastUserIndex(branch);
-			if (userIdx === -1) {
-				ctx.ui.notify("No user message found", "warning");
-				return;
-			}
+      if (turns.length === 0) {
+        ctx.ui.notify("No messages found", "warning");
+        return;
+      }
 
-			// Collect all assistant blocks after the latest user message
-			const blocks: string[] = [];
-			for (let i = userIdx + 1; i < branch.length; i++) {
-				const entry = branch[i];
-				if (entry?.type !== "message") continue;
-				if (entry.message?.role !== "assistant") continue;
-
-				const block = formatAssistantBlock(entry.message, "  ");
-				if (block) blocks.push(block);
-			}
-
-			if (blocks.length === 0) {
-				ctx.ui.notify("No assistant text found in the latest turn", "warning");
-				return;
-			}
-
-			const text = blocks.join("\n\n───\n\n");
-
-			await ctx.ui.custom<void>(
-				(tui, theme, _kb, done) => makeViewer(text, tui, theme, done),
-				{
-					overlay: true,
-					overlayOptions: {
-						anchor: "top-left",
-						width: "100%",
-						maxHeight: "100%",
-					},
-				},
-			);
-		},
-	});
+      await ctx.ui.custom<void>(
+        (tui, theme, _kb, done) =>
+          makeViewer(turns, turns.length - 1, tui, theme, done),
+        {
+          overlay: true,
+          overlayOptions: {
+            anchor: "top-left",
+            width: "100%",
+            maxHeight: "100%",
+          },
+        },
+      );
+    },
+  });
 }

@@ -58,7 +58,7 @@ const COMMAND_TIMEOUT_MS = 500;
 
 let cachedStatus: CachedStatus | null = null;
 let pendingFetch: Promise<VCSStatus> | null = null;
-let autoCompactEnabled = true;
+let autoCompactEnabled = false;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Git Operations

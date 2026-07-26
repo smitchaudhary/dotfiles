@@ -48,17 +48,9 @@ if [[ -r /opt/homebrew/opt/fzf/shell/completion.zsh ]]; then
   source /opt/homebrew/opt/fzf/shell/completion.zsh
 fi
 
-# For Mojo
-# export MODULAR_HOME="$HOME/.modular"
-# export PATH="$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$PATH"
-
 # UV package manager - delay updates for security vetting period
 export UV_EXCLUDE_NEWER="7 days"
 
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-#export PATH="$PATH:$HOME/.rvm/bin"
-#export PATH="$HOME/.rbenv/bin:$PATH"
 
 # Enable vim mode for command line editing
 bindkey -v
@@ -77,30 +69,6 @@ local private="${HOME}/.zsh.d/private.sh"
 if [ -e ${private} ]; then
   . ${private}
 fi
-
-# Overrides the cd command to activate the virtualenv if it is found in the folder
-# and deactivate if the folder is changed to an external folder. The virtual env
-# folder should be named .venv. This is useful when I am working on multiple projects
-# and I don't want to activate the virtualenv every time I cd into the folder.
-# But now that I use hatch, I don't need this anymore. Useful to keep it around.
-# function cd() {
-#   builtin cd "$@"
-
-#   if [[ -z "$VIRTUAL_ENV" ]] ; then
-#     ## If env folder is found then activate the vitualenv
-#       if [[ -d ./.venv ]] ; then
-#         source ./.venv/bin/activate
-#       fi
-#   else
-#     ## check the current folder belong to earlier VIRTUAL_ENV folder
-#     # if yes then do nothing
-#     # else deactivate
-#       parentdir="$(dirname "$VIRTUAL_ENV")"
-#       if [[ "$PWD"/ != "$parentdir"/* ]] ; then
-#         deactivate
-#       fi
-#   fi
-# }
 
 alias gs="git status"
 alias ga="git add"
@@ -154,14 +122,10 @@ source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 # This is to enable syntax highlighting for zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-. "$HOME/.local/bin/env"
-
 eval "$(zoxide init zsh)"
 
 # Add to PATH
 export PATH=/Users/smit/.opencode/bin:$PATH
-export PATH="/Users/smit/.antigravity/antigravity/bin:$PATH"
-export PATH="/Users/smit/.amp/bin:$PATH"
 export PATH="/Users/smit/.local/bin:$PATH"
 
 # zprof # To profile

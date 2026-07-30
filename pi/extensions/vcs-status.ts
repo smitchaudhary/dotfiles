@@ -18,7 +18,7 @@ import type { ExtensionAPI, ReadonlyFooterDataProvider } from "@earendil-works/p
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { isAbsolute, join, relative, resolve, sep } from "node:path";
 import { homedir } from "node:os";
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -235,6 +235,24 @@ function sanitizeStatusText(text: string): string {
     .trim();
 }
 
+function formatCwdForFooter(cwd: string): string {
+  const home = homedir();
+  if (!home) return cwd;
+
+  const resolvedCwd = resolve(cwd);
+  const resolvedHome = resolve(home);
+  const relativeToHome = relative(resolvedHome, resolvedCwd);
+
+  const isInsideHome =
+    relativeToHome === "" ||
+    (relativeToHome !== ".." &&
+      !relativeToHome.startsWith(`..${sep}`) &&
+      !isAbsolute(relativeToHome));
+
+  if (!isInsideHome) return cwd;
+  return relativeToHome === "" ? "~" : `~${sep}${relativeToHome}`;
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // Rendering
 // ═══════════════════════════════════════════════════════════════════════════
@@ -279,11 +297,7 @@ export default function (pi: ExtensionAPI) {
         // Line 1: pwd (branch) [status] • session_name
         // ═══════════════════════════════════════════════════════════════════
 
-        let pwd = ctx.cwd;
-        const home = homedir();
-        if (home && pwd.startsWith(home)) {
-          pwd = `~${pwd.slice(home.length)}`;
-        }
+        let pwd = formatCwdForFooter(ctx.cwd);
 
         // Get VCS status
         const vcsStatus = getCachedStatus(ctx.cwd);

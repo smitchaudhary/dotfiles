@@ -9,7 +9,7 @@
  *
  * Footer format:
  *   Line 1: ~/.path/to/dir (branch) [+2 ~3 ?1] • session_name
- *   Line 2: ↑tokens ↓tokens Rcache Wcache $cost (sub) ctx%/window (auto)    (provider) model • thinking
+ *   Line 2: ↑tokens ↓tokens Rcache Wcache CH% $cost (sub) ctx%/window (auto)    (provider) model • thinking
  *   Line 3: Extension statuses
  */
 
@@ -347,6 +347,7 @@ export default function (pi: ExtensionAPI) {
         let totalCacheRead = 0;
         let totalCacheWrite = 0;
         let totalCost = 0;
+        let latestCacheHitRate: number | undefined;
 
         for (const entry of ctx.sessionManager.getEntries()) {
           if (entry.type === "message" && entry.message.role === "assistant") {
@@ -356,6 +357,9 @@ export default function (pi: ExtensionAPI) {
             totalCacheRead += m.usage.cacheRead;
             totalCacheWrite += m.usage.cacheWrite;
             totalCost += m.usage.cost.total;
+            const latestPromptTokens = m.usage.input + m.usage.cacheRead + m.usage.cacheWrite;
+            latestCacheHitRate =
+              latestPromptTokens > 0 ? (m.usage.cacheRead / latestPromptTokens) * 100 : undefined;
           } else if (
             entry.type === "message" &&
             entry.message.role === "toolResult" &&
@@ -387,6 +391,9 @@ export default function (pi: ExtensionAPI) {
         if (totalOutput) statsParts.push(`↓${formatTokens(totalOutput)}`);
         if (totalCacheRead) statsParts.push(`R${formatTokens(totalCacheRead)}`);
         if (totalCacheWrite) statsParts.push(`W${formatTokens(totalCacheWrite)}`);
+        if ((totalCacheRead > 0 || totalCacheWrite > 0) && latestCacheHitRate !== undefined) {
+          statsParts.push(`CH${latestCacheHitRate.toFixed(1)}%`);
+        }
 
         // Show cost with "(sub)" indicator if using OAuth subscription
         const model = ctx.model;

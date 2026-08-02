@@ -50,10 +50,29 @@ Extract selected hunks into a new child change. The parent keeps the remaining h
 Options:
 - `-m <msg>` — Set the description for the new child change
 
+### Edit-split (for splitting *within* a hunk)
+
+When two logical changes share a single hunk (e.g. an agent inserted two unrelated blocks of lines contiguously), hunk IDs cannot separate them. Split by editing the diff instead:
+
+```sh
+# 1. Dump the working copy diff to a temp file (prints the path)
+jj-hunks split --edit
+
+# 2. Edit the file: delete the lines you do NOT want in the child change.
+#    Stale @@ header counts are fine — git apply --recount fixes them.
+#    Keep removed (-) lines with their adjacent added (+) lines.
+
+# 3. Apply
+jj-hunks split --apply /tmp/jj-hunks-edit.12345 -m "child description"
+```
+
+The edited patch must be a strict subset of the current working copy diff; `--apply` validates this and rejects reordered or invented lines. If a split cannot form valid patches (e.g. selecting an added line without the removed line it replaced), it fails with an error — adjust the selection and retry.
+
 ## Workflow
 
 1. Agent makes changes to the working copy
 2. Run `jj-hunks list` to see the hunks with their IDs
 3. For each logical group of hunks, run `jj-hunks split -m "<description>" '<hunk-id>'`
-4. Each split creates a child change with the selected hunks
-5. Continue until all hunks are organized into appropriate changes
+4. If two logical changes share a single hunk, use `jj-hunks split --edit` + `--apply` instead
+5. Each split creates a child change with the selected hunks
+6. Continue until all hunks are organized into appropriate changes

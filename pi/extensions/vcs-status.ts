@@ -356,6 +356,27 @@ export default function (pi: ExtensionAPI) {
             totalCacheRead += m.usage.cacheRead;
             totalCacheWrite += m.usage.cacheWrite;
             totalCost += m.usage.cost.total;
+          } else if (
+            entry.type === "message" &&
+            entry.message.role === "toolResult" &&
+            entry.message.usage
+          ) {
+            const u = entry.message.usage;
+            totalInput += u.input;
+            totalOutput += u.output;
+            totalCacheRead += u.cacheRead;
+            totalCacheWrite += u.cacheWrite;
+            totalCost += u.cost.total;
+          } else if (
+            (entry.type === "branch_summary" || entry.type === "compaction") &&
+            entry.usage
+          ) {
+            const u = entry.usage;
+            totalInput += u.input;
+            totalOutput += u.output;
+            totalCacheRead += u.cacheRead;
+            totalCacheWrite += u.cacheWrite;
+            totalCost += u.cost.total;
           }
         }
 

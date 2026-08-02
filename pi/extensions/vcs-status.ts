@@ -18,7 +18,7 @@ import type { ExtensionAPI, ReadonlyFooterDataProvider } from "@earendil-works/p
 import { truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
-import { isAbsolute, join, relative, resolve, sep } from "node:path";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { homedir } from "node:os";
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -123,15 +123,16 @@ function parseGitStatusOutput(output: string): { staged: number; unstaged: numbe
 }
 
 async function getGitStatus(cwd: string): Promise<GitStatus | null> {
-  if (!existsSync(join(cwd, ".git"))) return null;
+  const repoDir = findRepoRoot(cwd, ".git");
+  if (!repoDir) return null;
 
-  let branch = await runCommand("git", ["branch", "--show-current"], cwd);
+  let branch = await runCommand("git", ["branch", "--show-current"], repoDir);
   if (!branch) {
-    const sha = await runCommand("git", ["rev-parse", "--short", "HEAD"], cwd);
+    const sha = await runCommand("git", ["rev-parse", "--short", "HEAD"], repoDir);
     branch = sha || "detached";
   }
 
-  const statusOutput = await runCommand("git", ["status", "--porcelain", "--untracked-files=normal"], cwd, 1000);
+  const statusOutput = await runCommand("git", ["status", "--porcelain", "--untracked-files=normal"], repoDir, 1000);
   const { staged, unstaged, untracked } = statusOutput
     ? parseGitStatusOutput(statusOutput)
     : { staged: 0, unstaged: 0, untracked: 0 };
@@ -159,19 +160,20 @@ function parseJJStatusOutput(output: string): { modified: number; added: number;
 }
 
 async function getJJStatus(cwd: string): Promise<JJStatus | null> {
-  if (!existsSync(join(cwd, ".jj"))) return null;
+  const repoDir = findRepoRoot(cwd, ".jj");
+  if (!repoDir) return null;
 
   let bookmark = await runCommand(
     "jj",
     ["log", "-r", "closest_bookmark(@)", "--no-graph", "--color", "never", "-T", "bookmarks", "--limit", "1"],
-    cwd,
+    repoDir,
     1000
   );
 
   if (!bookmark || bookmark === "(empty)") bookmark = "(no bookmark)";
   bookmark = bookmark.trim();
 
-  const statusOutput = await runCommand("jj", ["status", "--no-pager"], cwd, 1000);
+  const statusOutput = await runCommand("jj", ["status", "--no-pager"], repoDir, 1000);
   const { modified, added, deleted } = statusOutput
     ? parseJJStatusOutput(statusOutput)
     : { modified: 0, added: 0, deleted: 0 };
@@ -182,6 +184,16 @@ async function getJJStatus(cwd: string): Promise<JJStatus | null> {
 // ═══════════════════════════════════════════════════════════════════════════
 // VCS Detection & Status
 // ═══════════════════════════════════════════════════════════════════════════
+
+function findRepoRoot(cwd: string, marker: string): string | null {
+  let dir = cwd;
+  while (true) {
+    if (existsSync(join(dir, marker))) return dir;
+    const parent = dirname(dir);
+    if (parent === dir) return null;
+    dir = parent;
+  }
+}
 
 async function fetchVCSStatus(cwd: string): Promise<VCSStatus> {
   const jjStatus = await getJJStatus(cwd);

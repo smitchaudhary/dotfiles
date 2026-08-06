@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.83.0",
+  "lastChangelogVersion": "0.84.0",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "high",
@@ -35,5 +35,7 @@
   "terminal": {
     "showTerminalProgress": true
   },
-  "transport": "websocket-cached"
+  "transport": "websocket-cached",
+  "fullscreenScrollbar": "auto",
+  "tuiMode": "fullscreen"
 }

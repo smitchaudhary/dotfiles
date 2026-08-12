@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.84.0",
+  "lastChangelogVersion": "0.84.2",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-sol",
   "defaultThinkingLevel": "high",
@@ -8,17 +8,14 @@
   },
   "theme": "gruvbox-dark",
   "editorPaddingX": 2,
-  "steeringMode": "one-at-a-time",
-  "followUpMode": "one-at-a-time",
+  "steeringMode": "all",
+  "followUpMode": "all",
   "packages": [
     "npm:@ifi/oh-pi-themes",
     "npm:pi-librarian"
   ],
   "quietStartup": true,
   "enabledModels": [
-    "anthropic/claude-opus-5",
-    "anthropic/claude-sonnet-5",
-    "cerebras/gpt-oss-120b",
     "google/gemini-3.1-pro-preview",
     "google/gemini-flash-latest",
     "groq/openai/gpt-oss-120b",
@@ -30,12 +27,18 @@
     "opencode-go/glm-5.2",
     "opencode-go/kimi-k3",
     "opencode-go/deepseek-v4-flash",
-    "opencode-go/deepseek-v4-pro"
+    "opencode-go/deepseek-v4-pro",
+    "command-code/gpt-5.6-sol",
+    "command-code/deepseek/deepseek-v4-flash",
+    "command-code/deepseek/deepseek-v4-pro"
   ],
   "terminal": {
     "showTerminalProgress": true
   },
   "transport": "websocket-cached",
+  "defaultProjectTrust": "ask",
   "fullscreenScrollbar": "auto",
-  "tuiMode": "fullscreen"
+  "tuiMode": "fullscreen",
+  "hideThinkingBlock": false,
+  "fullscreenExitOutput": "resume-hint"
 }

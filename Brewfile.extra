@@ -1,0 +1,11 @@
+tap "supabase/tap"
+
+brew "asc"
+brew "colima"
+brew "docker"
+brew "node@22"
+brew "pkgconf"
+brew "railway"
+brew "supabase/tap/supabase"
+
+cask "telegram"

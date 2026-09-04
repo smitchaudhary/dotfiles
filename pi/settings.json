@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.84.4",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-sol",
-  "defaultThinkingLevel": "high",
+  "lastChangelogVersion": "0.86.1",
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4.1-flash",
+  "defaultThinkingLevel": "max",
   "compaction": {
     "enabled": false
   },
@@ -16,21 +16,19 @@
   ],
   "quietStartup": true,
   "enabledModels": [
+    "opencode-go/deepseek-v4.1-flash",
     "google/gemini-3.1-pro-preview",
     "google/gemini-flash-latest",
-    "groq/openai/gpt-oss-120b",
     "openai-codex/gpt-5.6-luna",
     "openai-codex/gpt-5.6-sol",
     "openai-codex/gpt-5.6-terra",
-    "deepseek/deepseek-v4-flash",
-    "deepseek/deepseek-v4-pro",
-    "opencode-go/glm-5.2",
     "opencode-go/kimi-k3",
-    "opencode-go/deepseek-v4-flash",
     "opencode-go/deepseek-v4-pro",
-    "command-code/gpt-5.6-sol",
-    "command-code/deepseek/deepseek-v4-flash",
-    "command-code/deepseek/deepseek-v4-pro"
+    "command-code/deepseek/deepseek-v4-pro",
+    "opencode-go/muse-spark-1.3-contributor",
+    "opencode-go/glm-5.3",
+    "opencode-go/glm-5.3-flash",
+    "command-code/deepseek/deepseek-v4.1-flash"
   ],
   "terminal": {
     "showTerminalProgress": true
@@ -40,5 +38,6 @@
   "fullscreenScrollbar": "auto",
   "tuiMode": "fullscreen",
   "hideThinkingBlock": false,
-  "fullscreenExitOutput": "resume-hint"
+  "fullscreenExitOutput": "resume-hint",
+  "cacheWarming": "streaming"
 }

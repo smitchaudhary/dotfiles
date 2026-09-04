@@ -2,8 +2,8 @@ import {
   type Api,
   type AssistantMessage,
   type AssistantMessageEventStream,
-  type Context,
   type ImageContent,
+  type JsonObject,
   type Message,
   type Model,
   type SimpleStreamOptions,
@@ -12,9 +12,14 @@ import {
   type ThinkingContent,
   type ThinkingLevelMap,
   type ToolCall,
+  type TranscriptContext,
   type Usage,
   calculateCost,
+  collapseSystemMessages,
   createAssistantMessageEventStream,
+  getCurrentSystemPrompt,
+  getCurrentTools,
+  withoutInitialSystemMessage,
 } from "@earendil-works/pi-ai";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
@@ -215,6 +220,16 @@ export const COMMAND_CODE_MODELS: CommandCodeModelDef[] = [
     contextWindow: 1_000_000,
     maxTokens: 32_000,
     cost: { input: 0.22, output: 0.66, cacheRead: 0.007, cacheWrite: 0 },
+  },
+  {
+    id: "deepseek/deepseek-v4.1-flash",
+    name: "DeepSeek V4.1 Flash",
+    reasoning: true,
+    reasoningEfforts: ["high", "max"],
+    input: ["text", "image"],
+    contextWindow: 1_000_000,
+    maxTokens: 32_000,
+    cost: { input: 0.15, output: 0.6, cacheRead: 0.003, cacheWrite: 0 },
   },
   {
     id: "moonshotai/Kimi-K3",
@@ -614,6 +629,12 @@ type CommandCodeStreamEvent =
   | { type: "reasoning-end" }
   | { type: "tool-call"; toolCallId?: string; toolName?: string; input?: unknown }
   | {
+      type: "finish-step";
+      providerMetadata?: {
+        gateway?: { cost?: string; [key: string]: unknown };
+      };
+    }
+  | {
       type: "finish";
       finishReason?: string;
       rawFinishReason?: string;
@@ -723,7 +744,7 @@ function mapStopReason(raw: string | undefined): StopReason {
 
 function streamCommandCode(
   model: Model<Api>,
-  context: Context,
+  context: TranscriptContext,
   options?: SimpleStreamOptions,
 ): AssistantMessageEventStream {
   const stream = createAssistantMessageEventStream();
@@ -749,6 +770,11 @@ function streamCommandCode(
 
     let openText: (TextContent & { index?: number }) | null = null;
     let openThinking: (ThinkingContent & { index?: number }) | null = null;
+    // Actual billed cost reported by Command Code's gateway in the
+    // `finish-step` event. Used to reconcile the token-based cost below
+    // (accounts for peak/off-peak pricing and gateway surcharges that the
+    // static model catalog can't represent).
+    let serverCost: number | null = null;
 
     const finalizeText = () => {
       if (!openText) return;
@@ -791,15 +817,24 @@ function streamCommandCode(
         ...(options?.headers as Record<string, string> | undefined),
       };
 
+      // pi 0.86 passes a normalized transcript. The system prompt and tool
+      // declarations live in system messages, so fold them into one leading
+      // message first. This API takes the prompt in a separate `system` field,
+      // so drop the leading system message before converting the rest.
+      const transcript = collapseSystemMessages(context);
+      const systemPrompt = getCurrentSystemPrompt(transcript.messages);
+      const tools = getCurrentTools(transcript.messages);
+      const messages = withoutInitialSystemMessage(transcript.messages);
+
       const params: Record<string, unknown> = {
         model: model.id,
-        messages: convertMessages(context.messages),
-        tools: (context.tools ?? []).map((tool) => ({
+        messages: convertMessages(messages),
+        tools: tools.map((tool) => ({
           name: tool.name,
           description: tool.description,
           input_schema: tool.parameters,
         })),
-        system: context.systemPrompt ?? "",
+        system: systemPrompt,
         max_tokens: options?.maxTokens ?? Math.min(model.maxTokens || 64_000, 64_000),
         stream: true,
       };
@@ -932,7 +967,7 @@ function streamCommandCode(
               type: "toolCall",
               id: event.toolCallId ?? "",
               name: event.toolName ?? "",
-              arguments: (event.input as Record<string, any>) ?? {},
+              arguments: (event.input as JsonObject | undefined) ?? {},
             };
 
             output.content.push(toolCall);
@@ -948,22 +983,59 @@ function streamCommandCode(
             break;
           }
 
+          case "finish-step": {
+            // Gateway cost arrives on `finish-step` (before `finish`).
+            const rawCost = event.providerMetadata?.gateway?.cost;
+            if (typeof rawCost === "string") {
+              const parsed = Number(rawCost);
+              if (Number.isFinite(parsed) && parsed >= 0) {
+                serverCost = parsed;
+              }
+            }
+            break;
+          }
+
           case "finish": {
             finalizeText();
             finalizeThinking();
 
             const usage = event.totalUsage;
             if (usage) {
+              // Command Code's `inputTokens` INCLUDES cache reads/writes;
+              // pi expects `input` to be the uncached portion only
+              // (promptTokens = input + cacheRead + cacheWrite). Use
+              // `noCacheTokens` so the cached tokens aren't double-counted.
+              const inputTokenDetails = usage.inputTokenDetails;
               output.usage = {
-                input: usage.inputTokens ?? 0,
+                input:
+                  inputTokenDetails?.noCacheTokens ??
+                  Math.max(
+                    0,
+                    (usage.inputTokens ?? 0) -
+                      (inputTokenDetails?.cacheReadTokens ?? 0) -
+                      (inputTokenDetails?.cacheWriteTokens ?? 0),
+                  ),
                 output: usage.outputTokens ?? 0,
-                cacheRead: usage.inputTokenDetails?.cacheReadTokens ?? 0,
-                cacheWrite: usage.inputTokenDetails?.cacheWriteTokens ?? 0,
+                cacheRead: inputTokenDetails?.cacheReadTokens ?? 0,
+                cacheWrite: inputTokenDetails?.cacheWriteTokens ?? 0,
                 reasoning: usage.reasoningTokens,
                 totalTokens: usage.totalTokens ?? 0,
                 cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 },
               };
               output.usage.cost = calculateCost(model, output.usage);
+
+              // Reconcile with the server-billed total when available:
+              // scale the token-based bucket breakdown proportionally so
+              // cost.total matches the gateway's actual billed amount.
+              if (serverCost !== null) {
+                const computed = output.usage.cost;
+                const scale = computed.total > 0 ? serverCost / computed.total : 0;
+                computed.input *= scale;
+                computed.output *= scale;
+                computed.cacheRead *= scale;
+                computed.cacheWrite *= scale;
+                computed.total = serverCost;
+              }
             }
 
             output.rawStopReason = event.rawFinishReason ?? event.finishReason;

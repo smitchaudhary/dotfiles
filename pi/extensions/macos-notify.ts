@@ -2,7 +2,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { isToolCallEventType } from "@earendil-works/pi-coding-agent";
 
 let notificationsEnabled = true;
-const SOUND_FILE = "/System/Library/Sounds/Glass.aiff";
+const SOUND_FILE = "/System/Library/Sounds/Ping.aiff";
 
 // Ghostty is the only terminal I use — no need to check for others
 const GHOSTTY = new Set(["ghostty", "ghostty.app"]);
@@ -23,9 +23,9 @@ function makeUserWatcher(pi: ExtensionAPI) {
       }
 
       // Check 2: If inside tmux, is pi's own pane the active one?
-      if (process.env.TMUX) {
+      if (process.env.TMUX && process.env.TMUX_PANE) {
         const paneId = process.env.TMUX_PANE;
-        const { stdout: status } = await pi
+        const { stdout } = await pi
           .exec("tmux", [
             "display-message",
             "-p",
@@ -35,8 +35,16 @@ function makeUserWatcher(pi: ExtensionAPI) {
           ])
           .catch(() => ({ stdout: "" }));
 
-        // Returns "11" only if pi's window is active AND pi's pane is active within it
-        return status.trim() === "11";
+        const status = stdout.trim();
+        if (status) {
+          // Pane resolved: "11" only if pi's window is active AND its pane is active
+          return status === "11";
+        }
+
+        // Pane didn't resolve — the TMUX/TMUX_PANE env is stale (tmux server or
+        // pane died and pi kept running outside tmux). The frontmost-app check
+        // above already passed, so the user is watching: don't notify.
+        return true;
       }
 
       // Terminal is frontmost, no tmux — assume they're watching
@@ -126,7 +134,7 @@ export default function (pi: ExtensionAPI) {
   pi.registerCommand("notify-test", {
     description: "Play the notification sound",
     handler: async (_args, ctx) => {
-      await notify();
+      pi.exec("afplay", [SOUND_FILE]).catch(() => {});
       ctx.ui.notify("Sound played", "success");
     },
   });

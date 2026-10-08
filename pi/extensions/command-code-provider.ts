@@ -25,7 +25,7 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 const DEFAULT_BASE_URL = "https://api.commandcode.ai";
 const INFERENCE_ROUTE = "/alpha/generate";
-const CLI_VERSION = "1.27.0";
+const CLI_VERSION = "1.88.0";
 
 // ---------------------------------------------------------------------------
 // Model catalog

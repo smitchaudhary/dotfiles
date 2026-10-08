@@ -49,6 +49,16 @@ interface CachedStatus {
   cwd: string;
 }
 
+interface SessionStats {
+  totalInput: number;
+  totalOutput: number;
+  totalCacheRead: number;
+  totalCacheWrite: number;
+  totalCost: number;
+  latestCacheHitRate: number | undefined;
+  contextUsage: any;
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // Configuration
 // ═══════════════════════════════════════════════════════════════════════════
@@ -298,6 +308,94 @@ export default function (pi: ExtensionAPI) {
   function createFooterRenderer(ctx: any, theme: any, footerData: ReadonlyFooterDataProvider) {
     const unsub = footerData.onBranchChange(() => tuiRef?.requestRender());
 
+    let statsCache: {
+      sessionId: string;
+      leafId: string | null;
+      modelKey: string;
+      stats: SessionStats;
+    } | null = null;
+
+    function getSessionStats(): SessionStats {
+      const sessionManager = ctx.sessionManager;
+      const sessionId = sessionManager.getSessionId();
+      const leafId = sessionManager.getLeafId();
+      const modelKey = ctx.model ? `${ctx.model.provider}/${ctx.model.id}` : "";
+
+      const cached = statsCache;
+      if (
+        cached &&
+        cached.sessionId === sessionId &&
+        cached.leafId === leafId &&
+        cached.modelKey === modelKey
+      ) {
+        return cached.stats;
+      }
+
+      // Calculate cumulative usage from ALL session entries
+      let totalInput = 0;
+      let totalOutput = 0;
+      let totalCacheRead = 0;
+      let totalCacheWrite = 0;
+      let totalCost = 0;
+      let latestCacheHitRate: number | undefined;
+
+      for (const entry of sessionManager.getEntries()) {
+        if (entry.type === "usage") {
+          const u = entry.usage;
+          totalInput += u.input;
+          totalOutput += u.output;
+          totalCacheRead += u.cacheRead;
+          totalCacheWrite += u.cacheWrite;
+          totalCost += u.cost.total;
+        } else if (entry.type === "message" && entry.message.role === "assistant") {
+          const m = entry.message as AssistantMessage;
+          totalInput += m.usage.input;
+          totalOutput += m.usage.output;
+          totalCacheRead += m.usage.cacheRead;
+          totalCacheWrite += m.usage.cacheWrite;
+          totalCost += m.usage.cost.total;
+          const latestPromptTokens = m.usage.input + m.usage.cacheRead + m.usage.cacheWrite;
+          latestCacheHitRate =
+            latestPromptTokens > 0 ? (m.usage.cacheRead / latestPromptTokens) * 100 : undefined;
+        } else if (
+          entry.type === "message" &&
+          entry.message.role === "toolResult" &&
+          entry.message.usage
+        ) {
+          const u = entry.message.usage;
+          totalInput += u.input;
+          totalOutput += u.output;
+          totalCacheRead += u.cacheRead;
+          totalCacheWrite += u.cacheWrite;
+          totalCost += u.cost.total;
+        } else if (
+          (entry.type === "branch_summary" || entry.type === "compaction") &&
+          entry.usage
+        ) {
+          const u = entry.usage;
+          totalInput += u.input;
+          totalOutput += u.output;
+          totalCacheRead += u.cacheRead;
+          totalCacheWrite += u.cacheWrite;
+          totalCost += u.cost.total;
+        }
+      }
+
+      const stats: SessionStats = {
+        totalInput,
+        totalOutput,
+        totalCacheRead,
+        totalCacheWrite,
+        totalCost,
+        latestCacheHitRate,
+        contextUsage: ctx.getContextUsage?.(),
+      };
+
+      // Every append advances the leaf, so leafId also covers new entries.
+      statsCache = { sessionId, leafId, modelKey, stats };
+      return stats;
+    }
+
     return {
       dispose: unsub,
       invalidate() {},
@@ -341,48 +439,15 @@ export default function (pi: ExtensionAPI) {
         // Line 2: tokens, cost, context, model
         // ═══════════════════════════════════════════════════════════════════
 
-        // Calculate cumulative usage from ALL session entries
-        let totalInput = 0;
-        let totalOutput = 0;
-        let totalCacheRead = 0;
-        let totalCacheWrite = 0;
-        let totalCost = 0;
-        let latestCacheHitRate: number | undefined;
-
-        for (const entry of ctx.sessionManager.getEntries()) {
-          if (entry.type === "message" && entry.message.role === "assistant") {
-            const m = entry.message as AssistantMessage;
-            totalInput += m.usage.input;
-            totalOutput += m.usage.output;
-            totalCacheRead += m.usage.cacheRead;
-            totalCacheWrite += m.usage.cacheWrite;
-            totalCost += m.usage.cost.total;
-            const latestPromptTokens = m.usage.input + m.usage.cacheRead + m.usage.cacheWrite;
-            latestCacheHitRate =
-              latestPromptTokens > 0 ? (m.usage.cacheRead / latestPromptTokens) * 100 : undefined;
-          } else if (
-            entry.type === "message" &&
-            entry.message.role === "toolResult" &&
-            entry.message.usage
-          ) {
-            const u = entry.message.usage;
-            totalInput += u.input;
-            totalOutput += u.output;
-            totalCacheRead += u.cacheRead;
-            totalCacheWrite += u.cacheWrite;
-            totalCost += u.cost.total;
-          } else if (
-            (entry.type === "branch_summary" || entry.type === "compaction") &&
-            entry.usage
-          ) {
-            const u = entry.usage;
-            totalInput += u.input;
-            totalOutput += u.output;
-            totalCacheRead += u.cacheRead;
-            totalCacheWrite += u.cacheWrite;
-            totalCost += u.cost.total;
-          }
-        }
+        const {
+          totalInput,
+          totalOutput,
+          totalCacheRead,
+          totalCacheWrite,
+          totalCost,
+          latestCacheHitRate,
+          contextUsage,
+        } = getSessionStats();
 
         // Build stats line
         const statsParts: string[] = [];
@@ -404,7 +469,6 @@ export default function (pi: ExtensionAPI) {
         }
 
         // Context usage with color coding
-        const contextUsage = ctx.getContextUsage?.();
         const contextWindow = contextUsage?.contextWindow ?? model?.contextWindow ?? 0;
         const contextPercentValue = contextUsage?.percent ?? 0;
 

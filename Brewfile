@@ -24,6 +24,7 @@ brew "zoxide"
 brew "zsh-async"
 brew "zsh-syntax-highlighting"
 
+cask "antigravity-cli"
 cask "bitwarden"
 cask "codex"
 cask "droid"

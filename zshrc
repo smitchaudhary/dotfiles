@@ -128,4 +128,8 @@ eval "$(zoxide init zsh)"
 export PATH=/Users/smit/.opencode/bin:$PATH
 export PATH="/Users/smit/.local/bin:$PATH"
 
+# Send pi copies to the terminal via OSC 52 too, so they reach a remote
+# client's clipboard when tmux/SSH is attached from another machine.
+export PI_CLIPBOARD_OSC52=1
+
 # zprof # To profile

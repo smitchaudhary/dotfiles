@@ -54,154 +54,6 @@ export type CommandCodeModelDef = {
 // which models the extension exposes.
 export const COMMAND_CODE_MODELS: CommandCodeModelDef[] = [
   {
-    id: "claude-sonnet-5",
-    name: "Claude Sonnet 5",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh", "max"],
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 64_000,
-    cost: { input: 2, output: 10, cacheRead: 0.2, cacheWrite: 2.5 },
-  },
-  {
-    id: "claude-sonnet-4-6",
-    name: "Claude Sonnet 4.6",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh", "max"],
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 64_000,
-    cost: { input: 3, output: 15, cacheRead: 0.3, cacheWrite: 3.75 },
-  },
-  {
-    id: "claude-fable-5",
-    name: "Claude Fable 5",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh", "max"],
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 64_000,
-    cost: { input: 10, output: 50, cacheRead: 1, cacheWrite: 12.5 },
-  },
-  {
-    id: "claude-opus-5",
-    name: "Claude Opus 5",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh", "max"],
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 64_000,
-    cost: { input: 5, output: 25, cacheRead: 0.5, cacheWrite: 6.25 },
-  },
-  {
-    id: "claude-opus-4-8",
-    name: "Claude Opus 4.8",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh", "max"],
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 64_000,
-    cost: { input: 5, output: 25, cacheRead: 0.5, cacheWrite: 6.25 },
-  },
-  {
-    id: "claude-opus-4-7",
-    name: "Claude Opus 4.7",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh", "max"],
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 64_000,
-    cost: { input: 5, output: 25, cacheRead: 0.5, cacheWrite: 6.25 },
-  },
-  {
-    id: "claude-haiku-4-5-20251001",
-    name: "Claude Haiku 4.5",
-    reasoning: true,
-    input: ["text", "image"],
-    contextWindow: 200_000,
-    maxTokens: 16_000,
-    cost: { input: 1, output: 5, cacheRead: 0.1, cacheWrite: 1.25 },
-  },
-  {
-    id: "gpt-5.6-sol",
-    name: "GPT-5.6 Sol",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh", "max"],
-    input: ["text", "image"],
-    contextWindow: 1_050_000,
-    maxTokens: 64_000,
-    cost: { input: 2.5, output: 15, cacheRead: 0.25, cacheWrite: 3.125 },
-  },
-  {
-    id: "gpt-5.6-terra",
-    name: "GPT-5.6 Terra",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh", "max"],
-    input: ["text", "image"],
-    contextWindow: 1_050_000,
-    maxTokens: 64_000,
-    cost: { input: 2, output: 12, cacheRead: 0.2, cacheWrite: 2.5 },
-  },
-  {
-    id: "gpt-5.6-luna",
-    name: "GPT-5.6 Luna",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh", "max"],
-    input: ["text", "image"],
-    contextWindow: 1_050_000,
-    maxTokens: 64_000,
-    cost: { input: 0.2, output: 1.2, cacheRead: 0.02, cacheWrite: 0.25 },
-  },
-  {
-    id: "gpt-5.5",
-    name: "GPT-5.5",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh"],
-    input: ["text", "image"],
-    contextWindow: 400_000,
-    maxTokens: 64_000,
-    cost: { input: 5, output: 30, cacheRead: 0.5, cacheWrite: 0 },
-  },
-  {
-    id: "gpt-5.4",
-    name: "GPT-5.4",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh"],
-    input: ["text", "image"],
-    contextWindow: 400_000,
-    maxTokens: 64_000,
-    cost: { input: 2.5, output: 15, cacheRead: 0.25, cacheWrite: 0 },
-  },
-  {
-    id: "gpt-5.3-codex",
-    name: "GPT-5.3 Codex",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh"],
-    input: ["text", "image"],
-    contextWindow: 400_000,
-    maxTokens: 64_000,
-    cost: { input: 2, output: 8, cacheRead: 0.5, cacheWrite: 0 },
-  },
-  {
-    id: "gpt-5.4-mini",
-    name: "GPT-5.4 Mini",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high"],
-    input: ["text", "image"],
-    contextWindow: 400_000,
-    maxTokens: 64_000,
-    cost: { input: 0.75, output: 4.5, cacheRead: 0.075, cacheWrite: 0 },
-  },
-  {
-    id: "MiniMaxAI/MiniMax-M3-Free",
-    name: "MiniMax M3 (Free)",
-    reasoning: true,
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
     id: "deepseek/deepseek-v4-pro",
     name: "DeepSeek V4 Pro",
     reasoning: true,
@@ -212,386 +64,14 @@ export const COMMAND_CODE_MODELS: CommandCodeModelDef[] = [
     cost: { input: 0.66, output: 1.98, cacheRead: 0.022, cacheWrite: 0 },
   },
   {
-    id: "deepseek/deepseek-v4-flash",
-    name: "DeepSeek V4 Flash",
-    reasoning: true,
-    reasoningEfforts: ["high", "max"],
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.22, output: 0.66, cacheRead: 0.007, cacheWrite: 0 },
-  },
-  {
     id: "deepseek/deepseek-v4.1-flash",
     name: "DeepSeek V4.1 Flash",
     reasoning: true,
-    reasoningEfforts: ["high", "max"],
+    reasoningEfforts: ["low", "high", "max"],
     input: ["text", "image"],
     contextWindow: 1_000_000,
     maxTokens: 32_000,
     cost: { input: 0.15, output: 0.6, cacheRead: 0.003, cacheWrite: 0 },
-  },
-  {
-    id: "moonshotai/Kimi-K3",
-    name: "Kimi K3",
-    reasoning: false,
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 3, output: 15, cacheRead: 0.3, cacheWrite: 0 },
-  },
-  {
-    id: "moonshotai/Kimi-K2.7-Code",
-    name: "Kimi K2.7 Code",
-    reasoning: false,
-    input: ["text", "image"],
-    contextWindow: 256_000,
-    maxTokens: 32_000,
-    cost: { input: 0.95, output: 4, cacheRead: 0.19, cacheWrite: 0 },
-  },
-  {
-    id: "moonshotai/Kimi-K2.7-Code-Highspeed",
-    name: "Kimi K2.7 Code HighSpeed",
-    reasoning: false,
-    input: ["text", "image"],
-    contextWindow: 262_000,
-    maxTokens: 32_000,
-    cost: { input: 1.9, output: 8, cacheRead: 0.38, cacheWrite: 0 },
-  },
-  {
-    id: "moonshotai/Kimi-K2.6",
-    name: "Kimi K2.6",
-    reasoning: false,
-    input: ["text", "image"],
-    contextWindow: 256_000,
-    maxTokens: 32_000,
-    cost: { input: 0.95, output: 4, cacheRead: 0.16, cacheWrite: 0 },
-  },
-  {
-    id: "moonshotai/Kimi-K2.5",
-    name: "Kimi K2.5",
-    reasoning: false,
-    input: ["text", "image"],
-    contextWindow: 256_000,
-    maxTokens: 32_000,
-    cost: { input: 0.6, output: 3, cacheRead: 0.1, cacheWrite: 0 },
-  },
-  {
-    id: "zai-org/GLM-5.3",
-    name: "GLM-5.3",
-    reasoning: true,
-    reasoningEfforts: ["low", "high", "max"],
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 1.4, output: 4.4, cacheRead: 0.26, cacheWrite: 0 },
-  },
-  {
-    id: "zai-org/GLM-5.2",
-    name: "GLM-5.2",
-    reasoning: true,
-    reasoningEfforts: ["high", "max"],
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 1.4, output: 4.4, cacheRead: 0.26, cacheWrite: 0 },
-  },
-  {
-    id: "zai-org/GLM-5.2-Fast",
-    name: "GLM-5.2 Fast",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 3, output: 10.25, cacheRead: 0.5, cacheWrite: 0 },
-  },
-  {
-    id: "zai-org/GLM-5.1",
-    name: "GLM-5.1",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 1.4, output: 4.4, cacheRead: 0.26, cacheWrite: 0 },
-  },
-  {
-    id: "zai-org/GLM-5",
-    name: "GLM-5",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 200_000,
-    maxTokens: 32_000,
-    cost: { input: 1, output: 3.2, cacheRead: 0.2, cacheWrite: 0 },
-  },
-  {
-    id: "MiniMaxAI/MiniMax-M3",
-    name: "MiniMax M3",
-    reasoning: false,
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.3, output: 1.2, cacheRead: 0.06, cacheWrite: 0 },
-  },
-  {
-    id: "MiniMaxAI/MiniMax-M2.7",
-    name: "MiniMax M2.7",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.3, output: 1.2, cacheRead: 0.06, cacheWrite: 0 },
-  },
-  {
-    id: "MiniMaxAI/MiniMax-M2.5",
-    name: "MiniMax M2.5",
-    reasoning: false,
-    input: ["text", "image"],
-    contextWindow: 200_000,
-    maxTokens: 32_000,
-    cost: { input: 0.3, output: 1.2, cacheRead: 0.03, cacheWrite: 0 },
-  },
-  {
-    id: "xiaomi/mimo-v2.5-pro",
-    name: "MiMo V2.5 Pro",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.435, output: 0.87, cacheRead: 0.0036, cacheWrite: 0 },
-  },
-  {
-    id: "xiaomi/mimo-v2.5",
-    name: "MiMo V2.5",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.14, output: 0.28, cacheRead: 0.0028, cacheWrite: 0 },
-  },
-  {
-    id: "Qwen/Qwen3.8-Max",
-    name: "Qwen 3.8 Max",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "xhigh"],
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 2, output: 6, cacheRead: 0.25, cacheWrite: 2.5 },
-  },
-  {
-    id: "Qwen/Qwen3.7-Max",
-    name: "Qwen 3.7 Max",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 2.5, output: 7.5, cacheRead: 0.5, cacheWrite: 3.13 },
-  },
-  {
-    id: "Qwen/Qwen3.7-Plus",
-    name: "Qwen 3.7 Plus",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.4, output: 1.6, cacheRead: 0.08, cacheWrite: 0.5 },
-  },
-  {
-    id: "Qwen/Qwen3.7-Flash",
-    name: "Qwen 3.7 Flash",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.03, output: 0.13, cacheRead: 0.006, cacheWrite: 0.038 },
-  },
-  {
-    id: "Qwen/Qwen3.6-Max-Preview",
-    name: "Qwen 3.6 Max Preview",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 1.3, output: 7.8, cacheRead: 0.26, cacheWrite: 1.63 },
-  },
-  {
-    id: "Qwen/Qwen3.6-Plus",
-    name: "Qwen 3.6 Plus",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.5, output: 3, cacheRead: 0.1, cacheWrite: 0 },
-  },
-  {
-    id: "stepfun/Step-3.7-Flash",
-    name: "Step 3.7 Flash",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 256_000,
-    maxTokens: 32_000,
-    cost: { input: 0.2, output: 1.15, cacheRead: 0.04, cacheWrite: 0 },
-  },
-  {
-    id: "stepfun/Step-3.5-Flash",
-    name: "Step 3.5 Flash",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.1, output: 0.3, cacheRead: 0.02, cacheWrite: 0 },
-  },
-  {
-    id: "tencent/hy3-paid",
-    name: "Tencent Hy3 (Paid)",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 262_000,
-    maxTokens: 32_000,
-    cost: { input: 0.14, output: 0.58, cacheRead: 0.035, cacheWrite: 0 },
-  },
-  {
-    id: "tencent/Hy3",
-    name: "Tencent Hy3",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 262_000,
-    maxTokens: 32_000,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
-    id: "google/gemini-3.7-flash",
-    name: "Gemini 3.7 Flash",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high"],
-    input: ["text", "image"],
-    contextWindow: 1_050_000,
-    maxTokens: 32_000,
-    cost: { input: 0.75, output: 3.75, cacheRead: 0.075, cacheWrite: 0.04167 },
-  },
-  {
-    id: "google/gemini-3.6-flash",
-    name: "Gemini 3.6 Flash",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high"],
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 1.5, output: 7.5, cacheRead: 0.15, cacheWrite: 0 },
-  },
-  {
-    id: "google/gemini-3.5-flash",
-    name: "Gemini 3.5 Flash",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high"],
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 1.5, output: 9, cacheRead: 0.15, cacheWrite: 0 },
-  },
-  {
-    id: "google/gemini-3.5-flash-lite",
-    name: "Gemini 3.5 Flash Lite",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high"],
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.3, output: 2.5, cacheRead: 0.03, cacheWrite: 0 },
-  },
-  {
-    id: "google/gemini-3.1-flash-lite",
-    name: "Gemini 3.1 Flash Lite",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high"],
-    input: ["text", "image"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.25, output: 1.5, cacheRead: 0.03, cacheWrite: 0 },
-  },
-  {
-    id: "sakana/fugu-ultra",
-    name: "Fugu Ultra",
-    reasoning: true,
-    reasoningEfforts: ["high", "xhigh"],
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 5, output: 30, cacheRead: 0.5, cacheWrite: 0 },
-  },
-  {
-    id: "xai/grok-4.5",
-    name: "Grok 4.5",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high"],
-    input: ["text"],
-    contextWindow: 500_000,
-    maxTokens: 32_000,
-    cost: { input: 2, output: 6, cacheRead: 0.5, cacheWrite: 0 },
-  },
-  {
-    id: "xai/grok-4.6",
-    name: "Grok 4.6",
-    reasoning: true,
-    reasoningEfforts: ["low", "medium", "high", "xhigh"],
-    input: ["text"],
-    contextWindow: 500_000,
-    maxTokens: 32_000,
-    cost: { input: 2, output: 6, cacheRead: 0.5, cacheWrite: 0 },
-  },
-  {
-    id: "meta/muse-spark-1.1",
-    name: "Muse Spark 1.1",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_050_000,
-    maxTokens: 32_000,
-    cost: { input: 1.25, output: 4.25, cacheRead: 0.15, cacheWrite: 0 },
-  },
-  {
-    id: "meta/muse-spark-1.2",
-    name: "Muse Spark 1.2",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_050_000,
-    maxTokens: 32_000,
-    cost: { input: 1.25, output: 4.25, cacheRead: 0.15, cacheWrite: 0 },
-  },
-  {
-    id: "meta/muse-spark-1.2-contributor",
-    name: "Muse Spark 1.2 Contributor",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_050_000,
-    maxTokens: 32_000,
-    cost: { input: 0.1, output: 0.2, cacheRead: 0.002, cacheWrite: 0 },
-  },
-  {
-    id: "nvidia/nemotron-3-ultra-550b-a55b",
-    name: "Nemotron 3 Ultra",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0.6, output: 2.4, cacheRead: 0.12, cacheWrite: 0 },
-  },
-  {
-    id: "poolside/laguna-s-2.1-free",
-    name: "Laguna S 2.1 (Free)",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 256_000,
-    maxTokens: 32_000,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
-  },
-  {
-    id: "inclusionai/ling-3.0-flash-free",
-    name: "Ling 3.0 Flash (Free)",
-    reasoning: false,
-    input: ["text"],
-    contextWindow: 1_000_000,
-    maxTokens: 32_000,
-    cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
   },
 ];
 
@@ -669,10 +149,22 @@ function contentText(content: (TextContent | ImageContent)[]): string {
     .join("\n");
 }
 
-function convertMessages(messages: Message[]): CommandCodeWireMessage[] {
+function imageToWire(block: ImageContent): CommandCodeWireContent {
+  return {
+    type: "image",
+    image: `data:${block.mimeType};base64,${block.data}`,
+    mimeType: block.mimeType,
+  };
+}
+
+function convertMessages(
+  messages: Message[],
+  allowImages: boolean,
+): CommandCodeWireMessage[] {
   const wire: CommandCodeWireMessage[] = [];
 
-  for (const message of messages) {
+  for (let index = 0; index < messages.length; index++) {
+    const message = messages[index];
     if (message.role === "user") {
       const blocks: CommandCodeWireContent[] =
         typeof message.content === "string"
@@ -682,11 +174,7 @@ function convertMessages(messages: Message[]): CommandCodeWireMessage[] {
           : message.content.map((block) =>
               block.type === "text"
                 ? { type: "text", text: block.text }
-                : {
-                    type: "image",
-                    image: `data:${block.mimeType};base64,${block.data}`,
-                    mimeType: block.mimeType,
-                  },
+                : imageToWire(block),
             );
 
       if (blocks.length > 0) {
@@ -718,18 +206,55 @@ function convertMessages(messages: Message[]): CommandCodeWireMessage[] {
     }
 
     // toolResult
-    const resultBlocks: CommandCodeWireContent[] = [
-      {
-        type: "tool-result",
-        toolCallId: message.toolCallId,
-        toolName: message.toolName,
-        output: {
-          type: message.isError ? "error-text" : "text",
-          value: contentText(message.content),
-        },
-      },
-    ];
-    wire.push({ role: "tool", content: resultBlocks });
+    // The wire format's tool-result output is text-only, so images returned by
+    // tools (e.g. `read` on an image file) are attached in a following user
+    // message instead. Batch consecutive tool results so the tool messages stay
+    // contiguous on the wire.
+    const pendingImages: ImageContent[] = [];
+    let next = index;
+
+    for (; next < messages.length; next++) {
+      const toolMessage = messages[next];
+      if (toolMessage.role !== "toolResult") break;
+
+      const images = toolMessage.content.filter(
+        (block): block is ImageContent => block.type === "image",
+      );
+      const text = contentText(toolMessage.content);
+      const output =
+        text ||
+        (images.length > 0 && !allowImages
+          ? "[Image omitted: model does not support images]"
+          : "");
+
+      wire.push({
+        role: "tool",
+        content: [
+          {
+            type: "tool-result",
+            toolCallId: toolMessage.toolCallId,
+            toolName: toolMessage.toolName,
+            output: {
+              type: toolMessage.isError ? "error-text" : "text",
+              value: output,
+            },
+          },
+        ],
+      });
+
+      if (allowImages) {
+        pendingImages.push(...images);
+      }
+    }
+
+    index = next - 1;
+
+    if (pendingImages.length > 0) {
+      wire.push({
+        role: "user",
+        content: pendingImages.map((block) => imageToWire(block)),
+      });
+    }
   }
 
   return wire;
@@ -828,7 +353,7 @@ function streamCommandCode(
 
       const params: Record<string, unknown> = {
         model: model.id,
-        messages: convertMessages(messages),
+        messages: convertMessages(messages, model.input.includes("image")),
         tools: tools.map((tool) => ({
           name: tool.name,
           description: tool.description,

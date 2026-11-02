@@ -560,6 +560,7 @@ function streamCommandCode(
                 computed.cacheRead *= scale;
                 computed.cacheWrite *= scale;
                 computed.total = serverCost;
+                computed.totalFromProvider = true;
               }
             }
 

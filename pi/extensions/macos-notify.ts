@@ -4,21 +4,32 @@ import { isToolCallEventType } from "@earendil-works/pi-coding-agent";
 let notificationsEnabled = true;
 const SOUND_FILE = "/System/Library/Sounds/Ping.aiff";
 
-// Ghostty is the only terminal I use — no need to check for others
-const GHOSTTY = new Set(["ghostty", "ghostty.app"]);
+// Terminals I use.
+const TERMINAL_APPS = ["ghostty", "rex"];
+
+function isTerminalApp(name: string): boolean {
+  const normalized = name.trim().toLowerCase().replace(/\.app$/, "");
+  return TERMINAL_APPS.some(
+    (terminal) => normalized === terminal || normalized.startsWith(`${terminal} `),
+  );
+}
 
 function makeUserWatcher(pi: ExtensionAPI) {
   return async (): Promise<boolean> => {
     try {
       // Check 1: Is a terminal emulator the frontmost app?
-      const { stdout } = await pi.exec("osascript", [
-        "-e",
-        'tell application "System Events" to get name of first application process whose frontmost is true',
-      ]);
+      const { stdout } = await pi.exec(
+        "osascript",
+        [
+          "-e",
+          'tell application "System Events" to get name of first application process whose frontmost is true',
+        ],
+        { timeout: 3000, maxBuffer: 64 * 1024 },
+      );
       const frontmostApp = stdout.trim().toLowerCase();
 
-      if (!GHOSTTY.has(frontmostApp)) {
-        // User is not in Ghostty — definitely not watching
+      if (!isTerminalApp(frontmostApp)) {
+        // User is not in a terminal — definitely not watching
         return false;
       }
 
@@ -26,13 +37,17 @@ function makeUserWatcher(pi: ExtensionAPI) {
       if (process.env.TMUX && process.env.TMUX_PANE) {
         const paneId = process.env.TMUX_PANE;
         const { stdout } = await pi
-          .exec("tmux", [
-            "display-message",
-            "-p",
-            "-t",
-            paneId,
-            "#{window_active}#{pane_active}",
-          ])
+          .exec(
+            "tmux",
+            [
+              "display-message",
+              "-p",
+              "-t",
+              paneId,
+              "#{window_active}#{pane_active}",
+            ],
+            { timeout: 2000, maxBuffer: 16 * 1024 },
+          )
           .catch(() => ({ stdout: "" }));
 
         const status = stdout.trim();
